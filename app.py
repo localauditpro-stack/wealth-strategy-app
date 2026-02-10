@@ -182,7 +182,6 @@ def main():
         
         c1, c2, c3 = st.columns(3)
         with c1:
-            st.info("Start Here")
             st.markdown("### 🔍 Readiness Check")
             st.write("Assess your financial health and eligibility for advanced strategies in under 2 minutes.")
             if st.button("Start Assessment", key="btn_tier1", type="primary"):
