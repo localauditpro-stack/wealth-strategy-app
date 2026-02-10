@@ -1,5 +1,5 @@
-# Financial Advisor Lead Generator
 import streamlit as st
+from streamlit_option_menu import option_menu
 from calculators.tier1 import render_tier1, analyze_tier1
 from calculators.tier2 import render_tier2
 from calculators.tier3_super import render_tier3_super
@@ -14,8 +14,6 @@ def main():
         initial_sidebar_state="expanded"
     )
 
-    st.title("Wealth Strategy Generator")
-    
     # Initialize session state for shared user profile data
     if 'user_profile' not in st.session_state:
         st.session_state.user_profile = {
@@ -39,7 +37,11 @@ def main():
             "tier": "Unknown",
             "data": {}
         }
-    
+        
+    # Initialize navigation state
+    if 'page_selection' not in st.session_state:
+        st.session_state.page_selection = "Home"
+
     # --- CUSTOM CSS FOR APT WEALTH THEME ---
     st.markdown("""
         <style>
@@ -71,6 +73,7 @@ def main():
             border-radius: 8px;
             border: none;
             font-weight: 600;
+            width: 100%; /* Full width on mobile */
         }
         div.stButton > button:hover {
             background-color: #C5A059 !important;
@@ -119,13 +122,51 @@ def main():
     """, unsafe_allow_html=True)
     
     # Navigation
-    st.sidebar.title("Navigation")
-    selection = st.sidebar.radio("Go to", 
-        ["Home", 
-         "Tier 1: Am I Ready?", 
-         "Tier 2: Portfolio vs Property", 
-         "Tier 3: Super Power",
-         "Cost of Waiting (Bonus)"])
+    with st.sidebar:
+        # st.title("Navigation") # Option menu has its own style
+        
+        # Use simple indices to map selection to pages for easier logic
+        pages = [
+            "Home", 
+            "Tier 1: Am I Ready?", 
+            "Tier 2: Portfolio vs Property", 
+            "Tier 3: Super Power",
+            "Cost of Waiting (Bonus)"
+        ]
+        
+        # Determine default index based on session state
+        try:
+            default_index = pages.index(st.session_state.page_selection)
+        except ValueError:
+            default_index = 0
+            
+        selected_nav = option_menu(
+            "Navigation", 
+            pages, 
+            icons=['house', 'check-circle', 'graph-up-arrow', 'lightning', 'hourglass-split'], 
+            menu_icon="cast", 
+            default_index=default_index,
+            styles={
+                "container": {"padding": "0!important", "background-color": "#fafafa"},
+                "icon": {"color": "#C5A059", "font-size": "16px"}, 
+                "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+                "nav-link-selected": {"background-color": "#002B5C"},
+            }
+        )
+        
+        # Sync Sidebar Selection -> Session State
+        # Only update if the user manually clicked the sidebar (different from current state)
+        if selected_nav != st.session_state.page_selection:
+             st.session_state.page_selection = selected_nav
+             st.rerun()
+
+    # Define a helper to change page
+    def go_to_page(page_name):
+        st.session_state.page_selection = page_name
+        st.rerun()
+
+    # Main Content Rendering based on Session State
+    selection = st.session_state.page_selection
 
     if selection == "Home":
         # Hero Section
@@ -136,33 +177,32 @@ def main():
             </div>
         """, unsafe_allow_html=True)
         
-        # Feature Grid
+        # Feature Grid with Interaction
+        st.markdown("### 🚀 Start Your Journey")
+        
         c1, c2, c3 = st.columns(3)
         with c1:
-            st.markdown("""
-                <div class="card">
-                    <h3>🔍 Readiness Check</h3>
-                    <p>Assess your financial health and eligibility for advanced strategies in under 2 minutes.</p>
-                </div>
-            """, unsafe_allow_html=True)
+            st.info("Start Here")
+            st.markdown("### 🔍 Readiness Check")
+            st.write("Assess your financial health and eligibility for advanced strategies in under 2 minutes.")
+            if st.button("Start Assessment", key="btn_tier1", type="primary"):
+                go_to_page("Tier 1: Am I Ready?")
+                
         with c2:
-            st.markdown("""
-                <div class="card">
-                    <h3>📈 Strategy Compare</h3>
-                    <p>Data-driven comparison of Debt Recycling vs. Investment Property with tax modelling.</p>
-                </div>
-            """, unsafe_allow_html=True)
+            st.markdown("### 📈 Strategy Compare")
+            st.write("Data-driven comparison of Debt Recycling vs. Investment Property.")
+            if st.button("Compare Strategies", key="btn_tier2"):
+                 go_to_page("Tier 2: Portfolio vs Property")
+
         with c3:
-            st.markdown("""
-                <div class="card">
-                    <h3>⏱️ Cost of Waiting</h3>
-                    <p>Visualize the compound impact of delaying your investment decisions.</p>
-                </div>
-            """, unsafe_allow_html=True)
+            st.markdown("### ⏱️ Cost of Waiting")
+            st.write("Visualize the compound impact of delaying your investment decisions.")
+            if st.button("View Cost of Waiting", key="btn_cow"):
+                go_to_page("Cost of Waiting (Bonus)")
             
+        st.divider()
         st.markdown("### 🎯 Identify Your Opportunity")
-        st.markdown("Select a strategy to explore:")
-        
+
         # Educational Grid
         e1, e2 = st.columns(2)
         with e1:
@@ -170,12 +210,6 @@ def main():
                 <div class="card" style="border-left: 5px solid #C5A059;">
                     <h4>💸 The "Silent" Tax Leak</h4>
                     <p>Your 47% marginal rate is eroding your compound growth. See the difference structuring makes.</p>
-                    <p style="text-align: right; font-weight: bold; color: #002B5C;">Run Tax Scenario &rarr;</p>
-                </div>
-                <div class="card" style="border-left: 5px solid #002B5C;">
-                    <h4>🏠 Equity: Idle or Working?</h4>
-                    <p>Is your home's capital appreciation locked away, or are you recycling it into wealth?</p>
-                    <p style="text-align: right; font-weight: bold; color: #002B5C;">Compare Debt Strategies &rarr;</p>
                 </div>
             """, unsafe_allow_html=True)
             
@@ -184,17 +218,10 @@ def main():
                 <div class="card" style="border-left: 5px solid #002B5C;">
                     <h4>📉 The $200k Super Gap</h4>
                     <p>A 1% difference in fees and performance can cost a high-earner six figures by retirement.</p>
-                    <p style="text-align: right; font-weight: bold; color: #002B5C;">Compare My Fund &rarr;</p>
-                </div>
-                <div class="card" style="border-left: 5px solid #C5A059;">
-                    <h4>🏢 Property vs. Portfolio</h4>
-                    <p>Stop the "Pub Argument." Compare real-world yields, land tax, and leverage side-by-side.</p>
-                    <p style="text-align: right; font-weight: bold; color: #002B5C;">Run the Math &rarr;</p>
                 </div>
             """, unsafe_allow_html=True)
             
         st.write("") # Spacing
-        st.info("👈 **Start by selecting 'Tier 1' in the sidebar to begin your assessment.**")
         
     elif selection == "Tier 1: Am I Ready?":
         data = render_tier1()
@@ -228,18 +255,34 @@ def main():
                     }
                     st.success(f"Thank you! Your analysis has been sent to {email}.")
                     st.balloons()
-                    
-                    if status == "ready":
-                         st.markdown("### 👉 [Proceed to Tier 2: Strategy Comparison](#)") 
-
+            
+            # Next Button logic (independent of form)
+            st.write("")
+            st.markdown("### Ready for the next step?")
+            if st.button("Proceed to Strategy Comparison 👉", type="primary"):
+                 go_to_page("Tier 2: Portfolio vs Property")
+                 
     elif selection == "Tier 2: Portfolio vs Property":
         render_tier2()
+        
+        st.divider()
+        st.markdown("### See the power of Super?")
+        if st.button("Check Super Power 👉", type="primary"):
+            go_to_page("Tier 3: Super Power")
         
     elif selection == "Tier 3: Super Power":
         render_tier3_super()
         
+        st.divider()
+        st.markdown("### Bonus: The Cost of Delay")
+        if st.button("View Cost of Waiting 👉", type="primary"):
+            go_to_page("Cost of Waiting (Bonus)")
+        
     elif selection == "Cost of Waiting (Bonus)":
         render_cost_of_waiting()
+        st.divider()
+        if st.button("🏠 Back to Home"):
+            go_to_page("Home")
 
 if __name__ == "__main__":
     main()
