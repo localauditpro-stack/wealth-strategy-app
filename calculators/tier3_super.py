@@ -5,6 +5,7 @@ import json
 import os
 from utils.ui import parse_currency_input
 from utils.compliance import render_footer_disclaimer
+from utils.leads import render_lead_capture_form
 
 # Load fund fee data
 @st.cache_data
@@ -363,26 +364,42 @@ def render_tier3_super():
                 """)
         
         with tab3:
-            st.markdown("#### Detailed Projection")
-            
-            df = pd.DataFrame({
-                'Age': years,
-                'High Growth Balance': hg_projection['balance'],
-                'Balanced Balance': bal_projection['balance'],
-                'Gap': [hg - bal for hg, bal in zip(hg_projection['balance'], bal_projection['balance'])]
-            })
-            
-            st.dataframe(
-                df.style.format({
-                    'High Growth Balance': '${:,.0f}',
-                    'Balanced Balance': '${:,.0f}',
-                    'Gap': '${:,.0f}'
-                }),
-                use_container_width=True
-            )
+            # GATED CONTENT
+            if 'lead_data' in st.session_state and st.session_state.lead_data.get('email'):
+                st.markdown("#### Detailed Projection")
+                
+                df = pd.DataFrame({
+                    'Age': years,
+                    'High Growth Balance': hg_projection['balance'],
+                    'Balanced Balance': bal_projection['balance'],
+                    'Gap': [hg - bal for hg, bal in zip(hg_projection['balance'], bal_projection['balance'])]
+                })
+                
+                st.dataframe(
+                    df.style.format({
+                        'High Growth Balance': '${:,.0f}',
+                        'Balanced Balance': '${:,.0f}',
+                        'Gap': '${:,.0f}'
+                    }),
+                    use_container_width=True
+                )
+            else:
+                 st.info("🔒 **Detailed Projection Locked**")
+                 if render_lead_capture_form("tier3_tab3", button_label="Unlock Detailed View"):
+                     st.rerun()
             
         # Disclaimer Footer
         render_footer_disclaimer()
+
+        # PDF Generation (if data exists)
+        st.divider()
+        if 'lead_data' in st.session_state and st.session_state.lead_data.get('email'):
+             # PDF logic would go here
+             st.info("📄 PDF Report generation for Super is coming soon.")
+        else:
+             st.markdown("### 📄 Want a Professional PDF Report?")
+             if render_lead_capture_form("tier3_pdf", button_label="Generate PDF Report"):
+                 st.rerun()
 
 def calculate_super_projection(balance, salary, employer_rate, voluntary, return_rate, 
                                investment_fee_rate, admin_fee_flat, admin_fee_percent, 
