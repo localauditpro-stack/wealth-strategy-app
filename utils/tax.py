@@ -141,5 +141,17 @@ def calculate_land_tax(state, land_value):
              # Vic has lower thresholds and higher rates generally
             tax = 500 + (land_value - threshold) * 0.015 # rough avg
             
-    # Add other states as needed
+    elif state == "QLD":
+        threshold = 600000
+        if land_value > threshold:
+            tax = 500 + (land_value - threshold) * 0.01 # simplified
+    elif state == "WA":
+        threshold = 300000
+        if land_value > threshold:
+            tax = 300 + (land_value - threshold) * 0.0055 # simplified
+    elif state == "SA":
+        threshold = 534000
+        if land_value > threshold:
+             tax = (land_value - threshold) * 0.005 # simplified 
+
     return tax

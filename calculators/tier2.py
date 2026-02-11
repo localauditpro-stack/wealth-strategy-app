@@ -101,6 +101,7 @@ def render_tier2():
             market_data = PROPERTY_MARKET_DATA[ip_state]
             
             st.markdown(f"**Assumptions ({ip_state} 10y Avg):**")
+            st.caption(f"ℹ️ Applying {ip_state} market data: **Growth {market_data['growth']}%**, **Yield {market_data['yield']}%**")
             ip_growth = st.slider("Property Growth (%)", 0.0, 10.0, float(market_data['growth']), 0.1, key=f"ip_growth_{ip_state}") / 100
             ip_yield = st.slider("Rental Yield (%)", 0.5, 7.0, float(market_data['yield']), 0.1, key=f"ip_yield_{ip_state}") / 100
         
