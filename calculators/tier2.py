@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 from utils.tax import calculate_income_tax, calculate_marginal_rate, calculate_stamp_duty, calculate_lmi, calculate_land_tax
 from utils.ui import parse_currency_input
 from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
+from utils.leads import render_lead_capture_form
 
 def render_tier2():
     st.markdown("### 🎯 Debt-Funded Portfolio vs Investment Property")
@@ -137,14 +138,13 @@ def render_tier2():
         st.divider()
         
         # --- Lead Capture (The Gate) ---
+        # REMOVED: Upfront phone capture. Now just Calculate button.
+        
         col_cta1, col_cta2 = st.columns([2, 1])
         with col_cta1:
-            st.markdown("##### 🔐 Unlock Your Precision Report")
-            phone = st.text_input("Mobile Number", placeholder="0400 000 000 (Required for detailed breakdown)")
-        with col_cta2:
             st.write("") # spacing
-            st.write("")
-            submitted = st.button("🚀 Run Analysis", type="primary", use_container_width=True)
+        with col_cta2:
+             submitted = st.button("🚀 Calculate Projection", type="primary", use_container_width=True)
 
     if submitted:
         # 1. Update Lead Data & Shared Profile
@@ -160,7 +160,6 @@ def render_tier2():
 
         if 'lead_data' in st.session_state:
             st.session_state.lead_data.update({
-                "phone": phone,
                 "age": age,
                 "state": state,
                 "target_investment_state": ip_state,
@@ -168,7 +167,6 @@ def render_tier2():
                 "dependents": dependants, # standardizing on 'dependents' for lead_data might be needed if that's what it expects, checking lead_data struct
                 "loan_type": loan_type
             })
-            if phone: st.session_state.lead_data['score'] += 15
 
         # 2. Calculate Costs (Use IP State)
         stamp_duty = calculate_stamp_duty(ip_state, ip_price)
@@ -290,15 +288,21 @@ def render_tier2():
                 st.info(f"💡 **Projection:** Based on these assumptions, **{winner}** model is higher by **${diff:,.0f}** over 10 years. Consider also liquidity and tax flexibility.")
 
         with tab2:
-            st.markdown("#### Year-by-Year Net Wealth")
-            df = pd.DataFrame({
-                "Year": range(1, 11),
-                "Shares (Net Wealth)": [f"${x:,.0f}" for x in dr_results['net_wealth']],
-                "Property (Net Wealth)": [f"${x:,.0f}" for x in ip_results['net_wealth']],
-                "Shares (Annual Tax)": [f"${x:,.0f}" for x in dr_results['tax_saved_yearly']],
-                "Property (Annual Tax)": [f"${x:,.0f}" for x in ip_results['tax_saved_yearly']]
-            })
-            st.dataframe(df, hide_index=True, use_container_width=True)
+            # GATED CONTENT
+            if 'lead_data' in st.session_state and st.session_state.lead_data.get('email'):
+                st.markdown("#### Year-by-Year Net Wealth")
+                df = pd.DataFrame({
+                    "Year": range(1, 11),
+                    "Shares (Net Wealth)": [f"${x:,.0f}" for x in dr_results['net_wealth']],
+                    "Property (Net Wealth)": [f"${x:,.0f}" for x in ip_results['net_wealth']],
+                    "Shares (Annual Tax)": [f"${x:,.0f}" for x in dr_results['tax_saved_yearly']],
+                    "Property (Annual Tax)": [f"${x:,.0f}" for x in ip_results['tax_saved_yearly']]
+                })
+                st.dataframe(df, hide_index=True, use_container_width=True)
+            else:
+                st.info("🔒 **Detailed Breakdown Locked**")
+                if render_lead_capture_form("tier2_tab2", button_label="Unlock Breakdown"):
+                    st.rerun()
             
         with tab3:
             st.info("🚧 Cashflow Dashboard enables detailed income vs expense tracking.")
@@ -314,9 +318,9 @@ def render_tier2():
         # Disclaimer Footer
         render_footer_disclaimer()
     
-        # PDF Generation (if data exists)
-        if 'lead_data' in st.session_state:
-             st.divider()
+        # PDF Generation (Gated)
+        st.divider()
+        if 'lead_data' in st.session_state and st.session_state.lead_data.get('email'):
              # Simple button that does nothing for now to avoid complexity in this snippet, 
              # or we can keep the logic if it was working.
              # preserving the logic:
@@ -335,6 +339,10 @@ def render_tier2():
                      type="primary",
                      use_container_width=True
                  )
+        else:
+             st.markdown("### 📄 Want a Professional PDF Report?")
+             if render_lead_capture_form("tier2_pdf", button_label="Generate PDF Report"):
+                 st.rerun()
         
 import numpy_financial as npf
 

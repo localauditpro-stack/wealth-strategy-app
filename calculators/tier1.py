@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 
 from utils.ui import parse_currency_input
 from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
+from utils.leads import render_lead_capture_form
 
 def render_tier1():
     """Renders the enhanced Tier 1 'Financial Readiness Assessment' calculator."""
@@ -414,17 +415,21 @@ def show_next_steps(assessment):
     if assessment == "Ready":
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown("""
-            **📊 Next Calculator:**
-            - [Tier 2: Portfolio vs Property](#tier-2-portfolio-vs-property)
-            - Compare debt-funded investment strategies
-            """)
-        with col2:
-            st.markdown("""
-            **📚 Resources:**
-            - Download: Advanced Wealth Strategies Guide
-            - Book: Free Financial Health Check
-            """)
+            # Lead Capture (Partial Results Strategy)
+            if 'lead_data' not in st.session_state or not st.session_state.lead_data.get('email'):
+                st.info("👇 **Unlock Your Detailed Report and Action Plan**")
+                if render_lead_capture_form("tier1", button_label="Get Full Analysis"):
+                    st.rerun()
+            else:
+                # Show full analysis if unlocked
+                st.success(f"Full analysis unlocked for {st.session_state.lead_data.get('email')}")
+                # Mock email send verification
+                
+                # Next Button logic (only show if unlocked or maybe always?)
+                st.write("")
+                st.markdown("### Ready for the next step?")
+                if st.button("Proceed to Strategy Comparison 👉", type="primary"):
+                     go_to_page("Tier 2: Portfolio vs Property")
     
     elif assessment == "Building":
         col1, col2 = st.columns(2)
