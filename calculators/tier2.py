@@ -93,8 +93,11 @@ def render_tier2():
 
         # -- Strategy B: Property --
         with col_strat2:
-            ip_state = st.selectbox("Investment Property State", list(PROPERTY_MARKET_DATA.keys()), index=0)
-            st.warning(f"🏠 **Strategy B: Investment Property ({ip_state})**")
+            # Get current state from session state (or default) for the title
+            current_state = st.session_state.get("tier2_ip_state", "NSW")
+            st.warning(f"🏠 **Strategy B: Investment Property ({current_state})**")
+            
+            ip_state = st.selectbox("Investment Property State", list(PROPERTY_MARKET_DATA.keys()), index=0, key="tier2_ip_state")
             ip_price = parse_currency_input("Purchase Price ($)", DEFAULT_ASSET_VALUE)
             
             # Get specific defaults
