@@ -3,18 +3,19 @@ import pandas as pd
 import plotly.graph_objects as go
 from utils.tax import calculate_income_tax, calculate_marginal_rate, calculate_stamp_duty, calculate_lmi, calculate_land_tax
 from utils.ui import parse_currency_input
+from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
 
 def render_tier2():
     st.markdown("### 🎯 Debt-Funded Portfolio vs Investment Property")
     st.markdown("""
-    **The Smart Alternative:** Use your home equity to build a diversified share portfolio instead of buying an investment property.
+    **Strategy Comparison:** Compare the mathematical projections of using home equity for a share portfolio vs buying an investment property.
     
     ✅ **Tax-Deductible Interest** on investment loans  
-    ✅ **No Stamp Duty, LMI, or Maintenance** headaches  
-    ✅ **Liquidity** - sell shares anytime vs. waiting months to sell property  
-    ✅ **Diversification** - 200+ companies vs. one property in one suburb
+    ✅ **No Stamp Duty, LMI, or Maintenance** for shares  
+    ✅ **Liquidity** - shares vs property  
+    ✅ **Diversification** - market exposure differences
     
-    See the real numbers below 👇
+    See the modeled numbers below 👇
     """)
     
     # Load shared profile
@@ -277,17 +278,16 @@ def render_tier2():
             
             if winner == "Share Portfolio":
                 st.success(f"""
-                💡 **The Portfolio Advantage:** The debt-funded share portfolio leads by **${diff:,.0f}** over 10 years.
+                💡 **Projection:** The debt-funded share portfolio model is higher by **${diff:,.0f}** over 10 years in this scenario.
                 
-                **Why?** 
-                - ✅ Interest is **100% tax-deductible** (vs partial for property)
-                - ✅ **Tax Flexibility**: Sell small parcels over multiple years to manage Capital Gains Tax (vs varying lumpy property sale)
-                - ✅ **Superior Liquidity**: Access your money in T+2 days
-                - ✅ No upfront stamp duty of **${stamp_duty:,.0f}**
-                - ✅ No ongoing maintenance, rates, or land tax
+                **Key Factors in Model:** 
+                - Interest deductibility
+                - Tax flexibility (CGT management)
+                - Liquidity differences
+                - Absence of stamp duty (**${stamp_duty:,.0f}**) and ongoing property costs
                 """)
             else:
-                st.info(f"💡 **Insight:** Based on these assumptions, **{winner}** leads by **${diff:,.0f}** over 10 years. However, consider the liquidity and tax advantages of shares.")
+                st.info(f"💡 **Projection:** Based on these assumptions, **{winner}** model is higher by **${diff:,.0f}** over 10 years. Consider also liquidity and tax flexibility.")
 
         with tab2:
             st.markdown("#### Year-by-Year Net Wealth")
@@ -310,6 +310,9 @@ def render_tier2():
                 "Property": [f"${ip_results.get('tax_saved', [0]*10)[-1]:,.0f}", f"${ip_final - ip_results['net_wealth'][0]:,.0f}"]
             })
             st.table(cf_df)
+    
+        # Disclaimer Footer
+        render_footer_disclaimer()
     
         # PDF Generation (if data exists)
         if 'lead_data' in st.session_state:

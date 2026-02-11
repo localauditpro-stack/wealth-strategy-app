@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from utils.ui import parse_currency_input
+from utils.compliance import render_footer_disclaimer
 
 def render_cost_of_waiting():
     """Renders the Cost of Waiting calculator."""
@@ -54,10 +55,10 @@ def render_cost_of_waiting():
         # Display
         st.markdown(f"""
         <div style="background-color: #f0f2f6; padding: 20px; border-radius: 10px; border-left: 5px solid #ff4b4b;">
-            <h3 style="margin:0; color: #31333F;">You would have <strong>${final_value:,.0f}</strong> today.</h3>
+            <h3 style="margin:0; color: #31333F;">Hypothetical Value: <strong>${final_value:,.0f}</strong></h3>
             <p style="font-size: 1.1em; margin-top: 10px;">
                 Total Invested: <strong>${total_invested:,.0f}</strong><br>
-                Gain: <span style="color: #4CAF50; font-weight: bold;">+${gain:,.0f}</span> ({roi:.0f}%)
+                Hypothetical Gain: <span style="color: #4CAF50; font-weight: bold;">+${gain:,.0f}</span> ({roi:.0f}%)
             </p>
         </div>
         """, unsafe_allow_html=True)
@@ -176,7 +177,10 @@ def render_cost_of_waiting():
         m2.metric(f"Wait {delays[0]} Year", f"${results[0]['Final Wealth']:,.0f}", delta=f"-${results[0]['Cost']:,.0f}", delta_color="inverse")
         m3.metric(f"Wait {delays[2]} Years", f"${results[2]['Final Wealth']:,.0f}", delta=f"-${results[2]['Cost']:,.0f}", delta_color="inverse")
         
-        st.warning(f"⚠️ Waiting just **5 years** could cost you **${results[2]['Cost']:,.0f}** in final wealth.")
+        st.warning(f"⚠️ Delaying start by **5 years** is projected to reduce final wealth by **${results[2]['Cost']:,.0f}** in this scenario.")
+        
+        # Disclaimer Footer
+        render_footer_disclaimer()
 
 def calculate_compound(principal, monthly, rate, years, delay_years=0):
     """

@@ -4,6 +4,7 @@ import pandas as pd
 import json
 import os
 from utils.ui import parse_currency_input
+from utils.compliance import render_footer_disclaimer
 
 # Load fund fee data
 @st.cache_data
@@ -249,17 +250,16 @@ def render_tier3_super():
             # Insight
             if difference > 100000:
                 st.success(f"""
-                🎯 **The Compounding Effect:** By choosing High Growth, you could retire with **${difference:,.0f} MORE**.
+                🎯 **Potential Impact:** The High Growth model projects a balance of **${difference:,.0f} HIGHER** in this scenario.
                 
-                That's the difference between:
-                - A comfortable retirement vs a tight one
-                - Retiring at {retirement_age} vs working longer
-                - Leaving a legacy vs spending it all
+                **Considerations:**
+                - Impact on retirement lifestyle
+                - Alignment with your risk tolerance
                 
-                **Action:** Log into your super fund TODAY and switch to High Growth (if you're under 50).
+                **Next Steps:** Consider reviewing your allocation strategy if appropriate for your risk profile.
                 """)
             else:
-                st.info(f"💡 High Growth leads by ${difference:,.0f}. Even small return differences compound massively over time!")
+                st.info(f"💡 High Growth model leads by ${difference:,.0f} in this projection.")
         
         with tab2:
             st.markdown("### 🏆 How Does Your Fund Stack Up?")
@@ -351,13 +351,15 @@ def render_tier3_super():
             best_fund_name, best_fund_balance = best_fund[0], best_fund[-1][-1]
             
             if selected_fund == best_fund_name:
-                st.success(f"🎉 **Congratulations!** You're with the top performer! {selected_fund} would give you the highest retirement balance among these funds.")
+                st.success(f"🎉 **Top Performer:** Your fund ({selected_fund}) has the highest historical returns among those compared.")
             else:
                 difference_to_best = best_fund_balance - user_final
                 st.warning(f"""
-                ⚠️ **You could do better!** Switching from {selected_fund} to **{best_fund_name}** could give you an extra **${difference_to_best:,.0f}** at retirement.
+                ⚠️ **Comparison Update:** {best_fund_name} has historically outperformed {selected_fund}. 
                 
-                That's based on their historical 10-year returns. Consider reviewing your fund choice!
+                Projected difference based on past returns: **${difference_to_best:,.0f}**.
+                
+                *Past performance is not a reliable indicator of future performance.*
                 """)
         
         with tab3:
@@ -378,6 +380,9 @@ def render_tier3_super():
                 }),
                 use_container_width=True
             )
+            
+        # Disclaimer Footer
+        render_footer_disclaimer()
 
 def calculate_super_projection(balance, salary, employer_rate, voluntary, return_rate, 
                                investment_fee_rate, admin_fee_flat, admin_fee_percent, 

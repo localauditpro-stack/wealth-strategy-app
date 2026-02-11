@@ -2,6 +2,7 @@ import streamlit as st
 import plotly.graph_objects as go
 
 from utils.ui import parse_currency_input
+from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
 
 def render_tier1():
     """Renders the enhanced Tier 1 'Financial Readiness Assessment' calculator."""
@@ -157,11 +158,11 @@ def render_tier1():
         # Overall Assessment
         assessment = get_assessment_level(total_score)
         if assessment == "Ready":
-            st.success(f"**🎉 Excellent!** You scored {total_score}/100 - You're ready for advanced wealth strategies!")
+            st.success(f"**🎉 Assessment: Strong Position.** Score: {total_score}/100. Your financial position suggests you may be ready for advanced strategies.")
         elif assessment == "Building":
-            st.warning(f"**⚡ Good Progress!** You scored {total_score}/100 - You're building a strong foundation.")
+            st.warning(f"**⚡ Assessment: Building Foundation.** Score: {total_score}/100. You are on track to building a strong foundation.")
         else:
-            st.info(f"**🌱 Getting Started** You scored {total_score}/100 - Focus on strengthening your base first.")
+            st.info(f"**🌱 Assessment: Early Stage.** Score: {total_score}/100. Focus on strengthening your base first.")
         
         # Component Breakdown
         st.markdown("### 📈 Score Breakdown")
@@ -193,6 +194,8 @@ def render_tier1():
         # Next Steps
         st.markdown("### 🎯 Your Next Steps")
         show_next_steps(assessment)
+        
+        render_footer_disclaimer()
         
         return {
             "age": results['age'],
@@ -452,9 +455,9 @@ def analyze_tier1(data):
     score = data.get("total_score", 0)
     
     if score >= 70:
-        return "ready", "You are in a strong position to implement advanced wealth strategies."
+        return "ready", "Assessment suggests strong positioning for advanced strategies."
     elif score >= 40:
-        return "maybe", "You have a solid foundation. Focus on building equity and income."
+        return "maybe", "Assessment suggests focus on building equity and income."
     else:
-        return "not_ready", "Focus on building your foundation first."
+        return "not_ready", "Assessment suggests focusing on foundations."
 

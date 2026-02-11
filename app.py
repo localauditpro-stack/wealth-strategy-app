@@ -160,6 +160,10 @@ def main():
              st.session_state.page_selection = selected_nav
              st.rerun()
 
+        # Compliance Disclaimer
+        from utils.compliance import render_sidebar_disclaimer
+        render_sidebar_disclaimer()
+
     # Define a helper to change page
     def go_to_page(page_name):
         st.session_state.page_selection = page_name
