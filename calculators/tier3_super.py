@@ -121,6 +121,9 @@ def render_tier3_super():
     
     # Calculate button
     if st.button("🚀 Calculate My Super Future", type="primary", use_container_width=True):
+        st.session_state['tier3_submitted'] = True
+
+    if st.session_state.get('tier3_submitted', False):
         years_to_retirement = retirement_age - current_age
         
         # Get fund-specific fees

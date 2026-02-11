@@ -30,3 +30,11 @@ def parse_currency_input(label, default_value, help_text=None, key=None):
         return int(float(clean_val)) # Handle float strings
     except ValueError:
         return default_value
+
+def go_to_page(page_name):
+    """
+    Navigates to the specified page by updating session state and rerunning.
+    Requires 'page_selection' to be the key used by streamlit-option-menu in app.py.
+    """
+    st.session_state.page_selection = page_name
+    st.rerun()

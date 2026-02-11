@@ -1,7 +1,8 @@
 import streamlit as st
 import plotly.graph_objects as go
 
-from utils.ui import parse_currency_input
+from calculators.base import calculate_growth
+from utils.ui import parse_currency_input, go_to_page
 from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
 from utils.leads import render_lead_capture_form
 
@@ -116,8 +117,12 @@ def render_tier1():
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Calculate button
+    # Calculate button logic
+    # Real-time updates: Once clicked, it stays active and updates on input changes
     if st.button("🚀 Assess My Readiness", type="primary", use_container_width=True):
+        st.session_state['tier1_submitted'] = True
+
+    if st.session_state.get('tier1_submitted', False):
         # Update Global Profile
         st.session_state.user_profile.update({
             "age": age,

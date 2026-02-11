@@ -138,15 +138,17 @@ def render_tier2():
         st.divider()
         
         # --- Lead Capture (The Gate) ---
-        # REMOVED: Upfront phone capture. Now just Calculate button.
-        
         col_cta1, col_cta2 = st.columns([2, 1])
         with col_cta1:
             st.write("") # spacing
         with col_cta2:
-             submitted = st.button("🚀 Calculate Projection", type="primary", use_container_width=True)
+             # Use session state to track if we should show results
+             # This enables "Real-Time" updates. Once clicked, it stays active.
+             if st.button("🚀 Calculate Projection", type="primary", use_container_width=True):
+                 st.session_state['tier2_submitted'] = True
 
-    if submitted:
+    # Check session state var instead of just button return
+    if st.session_state.get('tier2_submitted', False):
         # 1. Update Lead Data & Shared Profile
         st.session_state.user_profile.update({
             "age": age,
