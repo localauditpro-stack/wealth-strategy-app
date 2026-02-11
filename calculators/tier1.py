@@ -1,7 +1,7 @@
 import streamlit as st
 import plotly.graph_objects as go
 
-from calculators.base import calculate_growth
+
 from utils.ui import parse_currency_input, go_to_page
 from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
 from utils.leads import render_lead_capture_form
