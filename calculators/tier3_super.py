@@ -129,7 +129,7 @@ def render_tier3_super():
         # Get fund-specific fees
         fund_info = fund_data[selected_fund]
         
-        # Determine Marginal Rate for Tax Benefit Calc (Simple approximation based on income)
+        # Determine Marginal Rate for Tax Benefit Calc (Simple estimate based on income)
         # Using 2024-25 resident tax rates
         income = annual_salary
         if income > 190000:

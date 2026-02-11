@@ -90,14 +90,14 @@ def render_cost_of_waiting():
         current_vol_val = smooth_values[0]
         
         # We need to simulate the path accurately
-        # This is an approximation to show the "shape" of volatility
+        # This is an estimate to show the "shape" of volatility
         # We simply add noise to the cumulative return
         import random
         # random.seed(42) # Deterministic for consistent UI
         
         # Let's construct a path that roughly tracks the smooth line but deviates
         for i in range(1, 11):
-            # The smooth return for this year was approx total_return
+            # The smooth return for this year was approximately total_return
             # We add a deviation
             this_year_return = total_return + deviations[i]
             

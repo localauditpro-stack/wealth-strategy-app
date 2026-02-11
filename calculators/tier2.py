@@ -90,7 +90,7 @@ def render_tier2():
             dr_amount = parse_currency_input("Investment Amount ($)", DEFAULT_ASSET_VALUE, help_text="Defaults to match property value for fair comparison")
             
             st.markdown("**Portfolio Assumptions (Diversified 70/30):**")
-            dr_growth = st.slider("Expected Growth (%)", 4.0, 12.0, 8.5, 0.1, key="dr_growth", help="Historical Avg ~8.5%") / 100
+            dr_growth = st.slider("Expected Growth (%)", 4.0, 12.0, 8.5, 0.1, key="dr_growth", help="Historical Average ~8.5%") / 100
             dr_yield = st.slider("Dividend Yield (%)", 1.0, 8.0, 2.5, 0.1, key="dr_yield", help="Typical Yield ~2.5% + Franking") / 100
 
         # -- Strategy B: Property --
@@ -227,15 +227,15 @@ def render_tier2():
 
             # Chart
             years = list(range(1, 11))
-            fig = go.Figure()
+            fig_wealth = go.Figure()
             # Gold for Shares (Growth/Opportunity)
-            fig.add_trace(go.Scatter(x=years, y=dr_results['net_wealth'], name="Debt Recycling (Shares)", 
+            fig_wealth.add_trace(go.Scatter(x=years, y=dr_results['net_wealth'], name="Debt Recycling (Shares)", 
                                     line={'color': '#C5A059', 'width': 4}, mode='lines+markers'))
             # Navy for Property (Stability/Foundation)
-            fig.add_trace(go.Scatter(x=years, y=ip_results['net_wealth'], name="Investment Property", 
+            fig_wealth.add_trace(go.Scatter(x=years, y=ip_results['net_wealth'], name="Investment Property", 
                                     line={'color': '#002B5C', 'width': 4}, mode='lines+markers'))
                                     
-            fig.update_layout(
+            fig_wealth.update_layout(
                 title="Projected Net Wealth Accumulation",
                 xaxis_title="Years",
                 yaxis_title="Net Wealth ($)",
@@ -243,7 +243,7 @@ def render_tier2():
                 hovermode="x unified",
                 height=400
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig_wealth, use_container_width=True)
             
             # New Tax Comparison Chart
             st.markdown("### 💸 Annual Tax Impact Comparison")
@@ -311,7 +311,7 @@ def render_tier2():
             
             # Simple Cashflow Table for now
             cf_df = pd.DataFrame({
-                "Metric": ["Est. Tax Saved (Cumulative)", "Net Equity Gain (10y)"],
+                "Metric": ["Estimated Tax Saved (Cumulative)", "Net Equity Gain (10y)"],
                 "Shares": [f"${dr_results.get('tax_saved', [0]*10)[-1]:,.0f}", f"${dr_final - dr_results['net_wealth'][0]:,.0f}"],
                 "Property": [f"${ip_results.get('tax_saved', [0]*10)[-1]:,.0f}", f"${ip_final - ip_results['net_wealth'][0]:,.0f}"]
             })
@@ -323,13 +323,23 @@ def render_tier2():
         # PDF Generation (Gated)
         st.divider()
         if 'lead_data' in st.session_state and st.session_state.lead_data.get('email'):
-             # Simple button that does nothing for now to avoid complexity in this snippet, 
-             # or we can keep the logic if it was working.
-             # preserving the logic:
              from utils.pdf_gen import generate_pdf_report
-             # We need to ensure we pass the right data. 
-             # Re-generating PDF might be costly on every re-run, but ok for now.
-             pdf = generate_pdf_report(st.session_state.lead_data, dr_results, ip_results)
+             
+             # Capture Chart Image
+             chart_img = None
+             try:
+                 # Ensure we have the figure to export
+                 if 'fig_wealth' in locals():
+                     chart_img = fig_wealth.to_image(format="png")
+             except Exception as e:
+                 st.error(f"Could not export chart for PDF: {e}")
+                 
+             pdf = generate_pdf_report(
+                 st.session_state.lead_data, 
+                 dr_results, 
+                 ip_results, 
+                 chart_image=chart_img
+             )
              
              c1, c2, c3 = st.columns([1,2,1])
              with c2:
