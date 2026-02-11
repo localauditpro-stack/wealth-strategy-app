@@ -209,6 +209,12 @@ def main():
                 <div class="card" style="border-left: 5px solid #C5A059;">
                     <h4>💸 The "Silent" Tax Leak</h4>
                     <p>Your 47% marginal rate is eroding your compound growth. See the difference structuring makes.</p>
+                    <p style="text-align: right; font-weight: bold; color: #002B5C;">Run Tax Scenario &rarr;</p>
+                </div>
+                <div class="card" style="border-left: 5px solid #002B5C;">
+                    <h4>🏠 Equity: Idle or Working?</h4>
+                    <p>Is your home's capital appreciation locked away, or are you recycling it into wealth?</p>
+                    <p style="text-align: right; font-weight: bold; color: #002B5C;">Compare Debt Strategies &rarr;</p>
                 </div>
             """, unsafe_allow_html=True)
             
@@ -217,6 +223,12 @@ def main():
                 <div class="card" style="border-left: 5px solid #002B5C;">
                     <h4>📉 The $200k Super Gap</h4>
                     <p>A 1% difference in fees and performance can cost a high-earner six figures by retirement.</p>
+                    <p style="text-align: right; font-weight: bold; color: #002B5C;">Compare My Fund &rarr;</p>
+                </div>
+                <div class="card" style="border-left: 5px solid #C5A059;">
+                    <h4>🏢 Property vs. Portfolio</h4>
+                    <p>Stop the "Pub Argument." Compare real-world yields, land tax, and leverage side-by-side.</p>
+                    <p style="text-align: right; font-weight: bold; color: #002B5C;">Run the Math &rarr;</p>
                 </div>
             """, unsafe_allow_html=True)
             
