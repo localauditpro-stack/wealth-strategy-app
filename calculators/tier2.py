@@ -20,7 +20,7 @@ def render_tier2():
     # Load shared profile
     profile = st.session_state.user_profile
 
-    with st.form("tier2_form"):
+    with st.container():
         # --- Section 1: Personal Profile ---
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown("#### 1. Personal Profile")
@@ -140,7 +140,7 @@ def render_tier2():
         with col_cta2:
             st.write("") # spacing
             st.write("")
-            submitted = st.form_submit_button("🚀 Run Analysis", type="primary", use_container_width=True)
+            submitted = st.button("🚀 Run Analysis", type="primary", use_container_width=True)
 
     if submitted:
         # 1. Update Lead Data & Shared Profile
