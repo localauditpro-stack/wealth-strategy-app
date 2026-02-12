@@ -22,9 +22,6 @@ def render_tier3_super():
     The power of compounding is **exponential**. See how optimizing your Super allocation **accelerates** your path to wealth.
     """)
     
-    The power of compounding is **exponential** - small differences in returns create **life-changing** wealth gaps.
-    """)
-    
     # Load fund data
     fund_data = load_fund_data()
     fund_names = sorted(fund_data.keys())
