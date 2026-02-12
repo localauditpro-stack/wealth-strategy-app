@@ -47,7 +47,7 @@ def main():
         <style>
         /* Main Headers */
         h1, h2, h3, h4, h5, h6 {
-            color: #002B5C !important; /* Apt Navy */
+            color: #1A2B3C !important; /* Apt Deep Navy */
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
         
@@ -57,7 +57,7 @@ def main():
             font-weight: 700;
         }
         [data-testid="stMetricLabel"] {
-            color: #002B5C !important;
+            color: #1A2B3C !important;
         }
         
         /* Sidebar Background */
@@ -68,7 +68,7 @@ def main():
         
         /* Primary Buttons */
         div.stButton > button {
-            background-color: #002B5C !important;
+            background-color: #1A2B3C !important;
             color: white !important;
             border-radius: 8px;
             border: none;
@@ -78,18 +78,18 @@ def main():
         div.stButton > button:hover {
             background-color: #C5A059 !important;
             color: white !important;
-            border: 1px solid #002B5C;
+            border: 1px solid #1A2B3C;
         }
         
         /* Expander Headers */
         .streamlit-expanderHeader {
-            color: #002B5C !important;
+            color: #1A2B3C !important;
             font-weight: 600;
         }
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #002B5C 0%, #001A38 100%);
+            background: linear-gradient(135deg, #1A2B3C 0%, #001A38 100%);
             padding: 4rem 2rem;
             border-radius: 12px;
             color: white;
@@ -109,15 +109,6 @@ def main():
             margin: 0 auto 2rem auto;
         }
         
-        /* Card Styling for Inputs */
-        .card {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            margin-bottom: 1rem;
-            border: 1px solid #E0E0E0;
-        }
         </style>
     """, unsafe_allow_html=True)
     
@@ -131,6 +122,7 @@ def main():
             "Tier 1: Am I Ready?", 
             "Tier 2: Portfolio vs Property", 
             "Tier 3: Super Power",
+            "Tier 4: Strategy & Legacy",
             "Cost of Waiting (Bonus)"
         ]
         
@@ -143,14 +135,14 @@ def main():
         selected_nav = option_menu(
             "Navigation", 
             pages, 
-            icons=['house', 'check-circle', 'graph-up-arrow', 'lightning', 'hourglass-split'], 
+            icons=['house', 'check-circle', 'graph-up-arrow', 'lightning', 'bank', 'hourglass-split'], 
             menu_icon="cast", 
             default_index=default_index,
             styles={
                 "container": {"padding": "0!important", "background-color": "#fafafa"},
                 "icon": {"color": "#C5A059", "font-size": "16px"}, 
                 "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
-                "nav-link-selected": {"background-color": "#002B5C"},
+                "nav-link-selected": {"background-color": "#1A2B3C"},
             }
         )
         
@@ -198,10 +190,10 @@ def main():
                  go_to_page("Tier 2: Portfolio vs Property")
 
         with c3:
-            st.markdown("### ⏱️ Cost of Waiting")
-            st.write("Visualize the compound impact of delaying your investment decisions.")
-            if st.button("View Cost of Waiting", key="btn_cow"):
-                go_to_page("Cost of Waiting (Bonus)")
+            st.markdown("### ⚡ Super Power")
+            st.write("The exponential impact of high growth super over time.")
+            if st.button("Optimize Super", key="btn_tier3"):
+                go_to_page("Tier 3: Super Power")
             
         st.divider()
         st.markdown("### 🎯 Identify Your Opportunity")
@@ -209,32 +201,24 @@ def main():
         # Educational Grid
         e1, e2 = st.columns(2)
         with e1:
-             st.markdown("""
-                <div class="card" style="border-left: 5px solid #C5A059;">
-                    <h4>💸 The "Silent" Tax Leak</h4>
-                    <p>Your 47% marginal rate is eroding your compound growth. See the difference structuring makes.</p>
-                    <p style="text-align: right; font-weight: bold; color: #002B5C;">Run Tax Scenario &rarr;</p>
-                </div>
-                <div class="card" style="border-left: 5px solid #002B5C;">
-                    <h4>🏠 Equity: Idle or Working?</h4>
-                    <p>Is your home's capital appreciation locked away, or are you recycling it into wealth?</p>
-                    <p style="text-align: right; font-weight: bold; color: #002B5C;">Compare Debt Strategies &rarr;</p>
-                </div>
-            """, unsafe_allow_html=True)
-            
+             with st.container(border=True):
+                 st.markdown("#### 💸 The \"Silent\" Tax Leak")
+                 st.write("Your 47% marginal rate is eroding your compound growth. See the difference structuring makes.")
+                 
+             with st.container(border=True):
+                 st.markdown("#### 🏠 Equity: Idle or Working?")
+                 st.write("Is your home's capital appreciation locked away, or are you recycling it into wealth?")
+
         with e2:
-             st.markdown("""
-                <div class="card" style="border-left: 5px solid #002B5C;">
-                    <h4>📉 The $200k Super Gap</h4>
-                    <p>A 1% difference in fees and performance can cost a high-earner six figures by retirement.</p>
-                    <p style="text-align: right; font-weight: bold; color: #002B5C;">Compare My Fund &rarr;</p>
-                </div>
-                <div class="card" style="border-left: 5px solid #C5A059;">
-                    <h4>🏢 Property vs. Portfolio</h4>
-                    <p>Stop the "Pub Argument." Compare real-world yields, land tax, and leverage side-by-side.</p>
-                    <p style="text-align: right; font-weight: bold; color: #002B5C;">Run the Math &rarr;</p>
-                </div>
-            """, unsafe_allow_html=True)
+             with st.container(border=True):
+                 st.markdown("#### 📉 The $200k Super Gap")
+                 st.write("A 1% difference in fees and performance can cost a high-earner six figures by retirement.")
+                 
+             with st.container(border=True):
+                 st.markdown("#### 🏛️ Strategy & Legacy")
+                 st.write("Advanced preservation: FIRE bridges, Estate planning, and Recontribution strategies.")
+                 if st.button("View Advanced Strategies", key="btn_tier4"):
+                     go_to_page("Tier 4: Strategy & Legacy")
             
         st.write("") # Spacing
         
@@ -287,6 +271,15 @@ def main():
         
     elif selection == "Tier 3: Super Power":
         render_tier3_super()
+        
+        st.divider()
+        st.markdown("### Advanced: Legacy & Strategy")
+        if st.button("View Strategy & Legacy 👉", type="primary"):
+            go_to_page("Tier 4: Strategy & Legacy")
+            
+    elif selection == "Tier 4: Strategy & Legacy":
+        from calculators.tier4 import render_tier4
+        render_tier4()
         
         st.divider()
         st.markdown("### Bonus: The Cost of Delay")

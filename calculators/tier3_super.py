@@ -27,7 +27,6 @@ def render_tier3_super():
     fund_names = sorted(fund_data.keys())
     
     # Fund selector - now reactive!
-    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown("#### Your Super Fund")
     
     selected_fund = st.selectbox(
@@ -49,7 +48,6 @@ def render_tier3_super():
     Balanced: {fund_info['return_balanced_10y']*100:.1f}% | High Growth: {fund_info['return_high_growth_10y']*100:.1f}%
     """)
     
-    st.markdown('</div>', unsafe_allow_html=True)
     
     # Get fund's historical returns for defaults
     balanced_default = fund_info['return_balanced_10y'] * 100
@@ -59,7 +57,6 @@ def render_tier3_super():
     st.info(f"📊 Using {selected_fund}'s historical returns: Balanced {balanced_default:.2f}%, High Growth {high_growth_default:.2f}%")
     
     # Personal Profile - NO FORM
-    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown("#### Your Super Profile")
     
     # Load defaults
@@ -77,10 +74,8 @@ def render_tier3_super():
         employer_contrib = st.slider("Employer Contribution (%)", 9.5, 15.0, 11.5, 0.5, help="Super Guarantee is 11.5% in 2025", key="employer") / 100
         voluntary_contrib = parse_currency_input("Voluntary Contributions ($/year)", 0, help_text="Extra you add", key="voluntary")
     
-    st.markdown('</div>', unsafe_allow_html=True)
     
     # Investment Options - sliders now update with fund changes!
-    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown("#### Investment Options to Compare")
     
     col_a, col_b = st.columns(2)
@@ -105,7 +100,6 @@ def render_tier3_super():
             help=f"{selected_fund}'s 10-year avg: {balanced_default:.1f}%"
         ) / 100
     
-    st.markdown('</div>', unsafe_allow_html=True)
     
     with st.expander("⚙️ Advanced: Catch-up & Salary Growth"):
         salary_growth = st.number_input("Salary Growth (% p.a.)", value=3.0, step=0.5, key="sal_growth") / 100

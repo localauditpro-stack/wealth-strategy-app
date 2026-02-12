@@ -24,7 +24,6 @@ def render_tier2():
 
     with st.container():
         # --- Section 1: Personal Profile ---
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown("#### 1. Personal Profile")
         col_p1, col_p2, col_p3 = st.columns(3)
         with col_p1:
@@ -39,10 +38,8 @@ def render_tier2():
         total_income = income_user + partner_income
         marginal_tax_rate = calculate_marginal_rate(total_income)
         st.caption(f"ℹ️ Combined Household Income: **${total_income:,.0f}** | Est. Marginal Tax Rate: **{marginal_tax_rate:.1%}**")
-        st.markdown('</div>', unsafe_allow_html=True)
-
+    
         # --- Section 2: Current Position ---
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown("#### 2. Your Home (The Engine)")
         col_h1, col_h2, col_h3 = st.columns(3)
         with col_h1:
@@ -60,10 +57,8 @@ def render_tier2():
             st.success(f"✅ **Usable Equity:** ${usable_equity:,.0f} (calculated at 80% LVR)")
         else:
             st.warning(f"⚠️ **Usable Equity:** ${max(0, usable_equity):,.0f} (You may need LMI to access more)")
-        st.markdown('</div>', unsafe_allow_html=True)
-
+    
         # --- Section 3: Strategy Comparison ---
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown("#### 3. Strategy Configuration")
         
         # Define defaults
@@ -110,17 +105,14 @@ def render_tier2():
             ip_growth = st.slider("Property Growth (%)", 0.0, 10.0, float(market_data['growth']), 0.1, key=f"ip_growth_{ip_state}") / 100
             ip_yield = st.slider("Rental Yield (%)", 0.5, 7.0, float(market_data['yield']), 0.1, key=f"ip_yield_{ip_state}") / 100
         
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        st.markdown('<div class="card">', unsafe_allow_html=True)
+            
         st.markdown("#### 4. Loan Settings")
         c_l1, c_l2 = st.columns(2)
         with c_l1:
              loan_type = st.radio("Loan Repayment Type", ["Interest Only", "Principal & Interest"], horizontal=True)
         with c_l2:
              loan_term = st.selectbox("Loan Term", [30, 25, 20], index=0)
-        st.markdown('</div>', unsafe_allow_html=True)
-
+    
         # --- Section 5: Advanced Settings (Collapsed) ---
         with st.expander("⚙️ Fine-Tune: Expenses, Inflation & Holding Costs"):
             c_a1, c_a2, c_a3 = st.columns(3)

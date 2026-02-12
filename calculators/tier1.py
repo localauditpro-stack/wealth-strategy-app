@@ -14,8 +14,6 @@ def render_tier1():
     based on your current financial position.
     """)
     
-    # Input Section
-    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown("#### Your Financial Profile")
     
     col1, col2, col3 = st.columns(3)
@@ -115,7 +113,6 @@ def render_tier1():
     
     st.info(f"ℹ️ **{risk_tolerance}:** {risk_descriptions[risk_tolerance]}")
     
-    st.markdown('</div>', unsafe_allow_html=True)
     
     # Calculate button logic
     # Real-time updates: Once clicked, it stays active and updates on input changes

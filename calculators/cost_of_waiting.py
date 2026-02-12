@@ -60,7 +60,7 @@ def render_cost_of_waiting():
                 Total Invested: <strong>${total_invested:,.0f}</strong><br>
                 Hypothetical Gain: <span style="color: #4CAF50; font-weight: bold;">+${gain:,.0f}</span> ({roi:.0f}%)
             </p>
-        </div>
+
         """, unsafe_allow_html=True)
         
         # Volatility Map Chart
