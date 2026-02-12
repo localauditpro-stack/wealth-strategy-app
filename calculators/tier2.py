@@ -280,20 +280,22 @@ def render_tier2():
             
             # Recommendation Logic (Basic)
             diff = abs(dr_final - ip_final)
-            winner = "Property" if ip_final > dr_final else "Share Portfolio"
+            # Scenario Logic (Neutral)
+            diff = abs(dr_final - ip_final)
+            higher_scenario = "Property Scenario" if ip_final > dr_final else "Share Scenario"
             
-            if winner == "Share Portfolio":
+            if higher_scenario == "Share Scenario":
                 st.success(f"""
-                💡 **Projection:** The debt-funded share portfolio model is higher by **${diff:,.0f}** over 10 years in this scenario.
+                💡 **Scenario Analysis:** The **Share Portfolio model** projects a result **${diff:,.0f} higher** over 10 years based on these inputs.
                 
-                **Key Factors in Model:** 
+                **Key Drivers in this Model:** 
                 - Interest deductibility
                 - Tax flexibility (CGT management)
                 - Liquidity differences
                 - Absence of stamp duty (**${stamp_duty:,.0f}**) and ongoing property costs
                 """)
             else:
-                st.info(f"💡 **Projection:** Based on these assumptions, **{winner}** model is higher by **${diff:,.0f}** over 10 years. Consider also liquidity and tax flexibility.")
+                st.info(f"💡 **Scenario Analysis:** The **Property model** projects a result **${diff:,.0f} higher** over 10 years based on these inputs. Consider also liquidity and tax flexibility.")
 
         with tab2:
             # GATED CONTENT

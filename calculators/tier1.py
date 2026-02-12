@@ -172,11 +172,11 @@ def render_tier1():
         # Overall Assessment
         assessment = get_assessment_level(total_score)
         if assessment == "Ready":
-            st.success(f"**🎉 Assessment: Strong Position.** Score: {total_score}/100. Your financial position suggests you may be ready for advanced strategies.")
+            st.success(f"**🎉 Readiness Score: Strong.** Score: {total_score}/100. Your financial position suggests you may be ready for advanced strategies.")
         elif assessment == "Building":
-            st.warning(f"**⚡ Assessment: Building Foundation.** Score: {total_score}/100. You are on track to building a strong foundation.")
+            st.warning(f"**⚡ Readiness Score: Building Foundation.** Score: {total_score}/100. You are on track to building a strong foundation.")
         else:
-            st.info(f"**🌱 Assessment: Early Stage.** Score: {total_score}/100. Focus on strengthening your base first.")
+            st.info(f"**🌱 Readiness Score: Early Stage.** Score: {total_score}/100. Focus on strengthening your base first.")
         
         # Component Breakdown
         st.markdown("### 📈 Score Breakdown")
@@ -203,7 +203,7 @@ def render_tier1():
             st.caption(get_projection_disclaimer())
         
         # Strategy Recommendations
-        st.markdown("### 💡 Recommended Strategies")
+        st.markdown("### 💡 Strategies to Explore")
         show_recommendations(total_score, assessment)
         
         # Next Steps

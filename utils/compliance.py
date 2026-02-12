@@ -20,13 +20,13 @@ def render_footer_disclaimer():
         "👋 **Next Steps**\n\n"
         "Projections are not guarantees. Strategies discussed here are complex and rely on specific "
         "tax and legal structures. For a strategy tailored to your specific circumstances, "
-        "we recommend speaking with a licensed professional."
+        "we suggest seeking advice from a licensed professional."
     )
 
 def get_projection_disclaimer():
     """Returns standard text for use near calculation results."""
     return (
-        "Figures are mathematical projections based on the variables provided. "
+        "Figures are mathematical projections based on the variables provided and historical assumptions. "
         "They are not predictions or guarantees of future performance. "
-        "Actual results will vary independently of these projections."
+        "This is a model, not a financial forecast."
     )

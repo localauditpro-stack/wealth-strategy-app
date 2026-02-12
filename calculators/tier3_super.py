@@ -352,11 +352,11 @@ def render_tier3_super():
             best_fund_name, best_fund_balance = best_fund[0], best_fund[-1][-1]
             
             if selected_fund == best_fund_name:
-                st.success(f"🎉 **Top Performer:** Your fund ({selected_fund}) has the highest historical returns among those compared.")
+                st.success(f"🎉 **Historical Comparison:** Your fund ({selected_fund}) has the highest historical returns among those compared over the last 10 years.")
             else:
                 difference_to_best = best_fund_balance - user_final
                 st.warning(f"""
-                ⚠️ **Comparison Update:** {best_fund_name} has historically outperformed {selected_fund}. 
+                ⚠️ **Historical Comparison:** {best_fund_name} has historically outperformed {selected_fund} over the last 10 years. 
                 
                 Projected difference based on past returns: **${difference_to_best:,.0f}**.
                 
