@@ -137,12 +137,14 @@ def render_cost_of_waiting():
         st.plotly_chart(fig, use_container_width=True)
         
         st.caption("💡 **Insight:** Notice the dips (e.g. Year 2, Year 5). Many investors panic and sell here. Staying the course is how you capture the full 10-year growth.")
+        st.caption("ℹ️ *Disclaimer: This volatility map is a simulation for illustrative purposes only. It does not predict future market movements or guarantee performance.*")
 
     st.divider()
 
     # --- SECTION 2: PROSPECTIVE (The "Future Cost") ---
     st.markdown("### 2. The Future Cost of Delaying Decisions")
     st.write("How much does waiting **1, 3, or 5 years** cost you in future wealth?")
+    st.info("ℹ️ **Methodology:** The 'Cost of Delay' represents the difference in potential future wealth caused by starting the compounding process later. It assumes funds sit idle (earning 0%) during the delay period.")
 
     with st.expander("Adjust Future Assumptions", expanded=True):
         c1, c2 = st.columns(2)

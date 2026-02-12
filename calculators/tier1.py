@@ -154,6 +154,15 @@ def render_tier1():
         # Display Results
         st.markdown("## 📊 Your Readiness Score")
         
+        st.info("""
+        **ℹ️ How this score is calculated:**
+        The **Financial Readiness Score** is a composite metric derived from 4 key pillars:
+        1.  **Equity Strength (30%)**: Your accessible home equity relative to property value.
+        2.  **Income Capacity (30%)**: Household surplus income potential.
+        3.  **Experience (20%)**: Your history with different asset classes.
+        4.  **Risk Profile (20%)**: Alignment with growth-oriented strategies.
+        """)
+        
         # Gauge Chart
         fig = create_gauge_chart(total_score)
         st.plotly_chart(fig, use_container_width=True)

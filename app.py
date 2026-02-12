@@ -122,7 +122,8 @@ def main():
             "Tier 1: Am I Ready?", 
             "Tier 2: Portfolio vs Property", 
             "Tier 3: Super Power",
-            "Tier 4: Strategy & Legacy",
+            "Tier 4: FIRE Strategy",
+            "Tier 5: Legacy & Estate",
             "Cost of Waiting (Bonus)"
         ]
         
@@ -135,7 +136,7 @@ def main():
         selected_nav = option_menu(
             "Navigation", 
             pages, 
-            icons=['house', 'check-circle', 'graph-up-arrow', 'lightning', 'bank', 'hourglass-split'], 
+            icons=['house', 'check-circle', 'graph-up-arrow', 'lightning', 'fire', 'bank', 'hourglass-split'], 
             menu_icon="cast", 
             default_index=default_index,
             styles={
@@ -218,7 +219,7 @@ def main():
                  st.markdown("#### 🏛️ Strategy & Legacy")
                  st.write("Advanced preservation: FIRE bridges, Estate planning, and Recontribution strategies.")
                  if st.button("View Advanced Strategies", key="btn_tier4"):
-                     go_to_page("Tier 4: Strategy & Legacy")
+                     go_to_page("Tier 4: FIRE Strategy")
             
         st.write("") # Spacing
         
@@ -273,13 +274,22 @@ def main():
         render_tier3_super()
         
         st.divider()
-        st.markdown("### Advanced: Legacy & Strategy")
-        if st.button("View Strategy & Legacy 👉", type="primary"):
-            go_to_page("Tier 4: Strategy & Legacy")
+        st.markdown("### Advanced: FIRE Strategy")
+        if st.button("View FIRE Strategy 👉", type="primary"):
+            go_to_page("Tier 4: FIRE Strategy")
+
+    elif selection == "Tier 4: FIRE Strategy":
+        from calculators.fire import render_fire_calculator
+        render_fire_calculator()
+        
+        st.divider()
+        st.markdown("### Next: Estate & Legacy")
+        if st.button("View Legacy & Estate 👉", type="primary"):
+             go_to_page("Tier 5: Legacy & Estate")
             
-    elif selection == "Tier 4: Strategy & Legacy":
-        from calculators.tier4 import render_tier4
-        render_tier4()
+    elif selection == "Tier 5: Legacy & Estate":
+        from calculators.tier5_legacy import render_tier5_legacy
+        render_tier5_legacy()
         
         st.divider()
         st.markdown("### Bonus: The Cost of Delay")

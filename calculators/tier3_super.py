@@ -38,6 +38,8 @@ def render_tier3_super():
     
     # Display fund fees (updates immediately when fund changes)
     fund_info = fund_data[selected_fund]
+    st.info(f"ℹ️ **Data Source:** Fee data sourced from {selected_fund} Product Disclosure Statement (PDS) for standard accumulation accounts.")
+    
     st.caption(f"""
     **{selected_fund} Fees (from latest PDS):**  
     Admin: ${fund_info['admin_fee_flat']}/year + {fund_info['admin_fee_percent']*100:.2f}% (capped at ${fund_info['admin_fee_cap']})  

@@ -3,13 +3,13 @@ import plotly.graph_objects as go
 from utils.ui import parse_currency_input
 from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
 
-def render_tier4():
-    """Renders the Tier 4 'Strategy & Legacy' Calculator."""
+def render_tier5_legacy():
+    """Renders the Tier 5 'Legacy & Estate' Calculator."""
     
     # --- 1. Header Compliance Warning ---
     st.warning("⚠️ **Hypothetical Scenarios**: The following results are hypothetical scenarios based on the data provided and historical tax facts. They are not a recommendation to acquire or dispose of a financial product.")
 
-    st.markdown("### 🏛️ Strategy & Legacy Planner")
+    st.markdown("### 🏛️ Tier 5: Legacy & Estate Planning")
     st.markdown("""
     Model advanced wealth preservation strategies including **FIRE (Financial Independence)**, **Estate Planning**, and **Tax Optimization**.
     """)
@@ -52,28 +52,18 @@ def render_tier4():
 
     # --- 3. Core Logic & Visualization ---
     
-    # A. FIRE Bridge
+    # A. FIRE Bridge Link
     st.markdown("#### 🔥 FIRE Bridge Calculation")
-    st.markdown("Determine the gap between your desired early retirement age and access to Super (Age 60).")
+    st.markdown("Planning to retire before 60? You need a 'Bridge' of capital to get you to preservation age.")
     
-    col_fire_1, col_fire_2 = st.columns(2)
+    col_fire_1, col_fire_2 = st.columns([3, 1])
     with col_fire_1:
-        lifestyle_target = parse_currency_input("Desired Annual Lifestyle ($)", 100000, key="t4_lifestyle")
-        
-    preservation_age = 60
-    years_to_bridge = max(0, preservation_age - current_age)
-    bridge_fund_needed = years_to_bridge * lifestyle_target
-    
+         st.info("💡 We've moved the FIRE Bridge to its own dedicated calculator with advanced market modeling.")
     with col_fire_2:
-        if current_age < 60:
-            st.metric(
-                label=f"Bridge Fund Needed (Age {current_age} to 60)", 
-                value=f"${bridge_fund_needed:,.0f}",
-                delta=f"{years_to_bridge} Years funding required",
-                delta_color="inverse"
-            )
-        else:
-            st.success("✅ You have reached preservation age. Full access to Super is available (subject to retirement condition).")
+         # Visual placeholder or button handled in app navigation mostly, but we can add a direct link button style if needed
+         # or just text directing them.
+         st.write("👉 Select **FIRE Path** from the main menu")
+
 
     st.divider()
 
@@ -85,7 +75,8 @@ def render_tier4():
     estate_tax_liability = super_balance * taxable_portion * 0.17
     
     # Scope Note
-    st.caption("ℹ️ *Estate Tax Note: Death benefits tax modeling assumes payment to a non-tax dependent beneficiary (e.g., an adult child). Medicare Levy (2%) is included in the 17% calculation.*")
+    # Scope Note
+    st.caption("ℹ️ *Estate Tax Note: Estimates potential 'Death Benefits Tax' (Taxable Component x 15% + 2% Medicare Levy) applicable to non-dependant beneficiaries (e.g. adult children).*")
 
     col_est_1, col_est_2 = st.columns([1, 2])
     

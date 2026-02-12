@@ -196,6 +196,16 @@ def render_tier2():
         # 4. Results Display (Tabbed)
         st.markdown("## 📊 Analysis Results")
         
+        with st.expander("ℹ️ Assumptions & Methodology", expanded=False):
+            st.markdown(f"""
+            **How these projections are calculated:**
+            *   **Property Growth:** Based on 10-year average data for **{ip_state}** (Source: CoreLogic/REIA historical datasets).
+            *   **Tax Rates:** 2024-25 Resident Tax Rates + 2% Medicare Levy.
+            *   **Loan Costs:** Interest calculations assume a constant rate of **{loan_rate*100:.2f}%** over the selected term.
+            *   **Inflation:** All future values are nominal (not inflation-adjusted) unless specified.
+            *   **Rental Yield:** Gross yield estimate derived from state averages; actual yields vary by suburb and property type.
+            """)
+        
         tab1, tab2, tab3 = st.tabs(["📈 Dashboard", "📋 Yearly Breakdown", "💰 Cashflow Analysis"])
         
         with tab1:
