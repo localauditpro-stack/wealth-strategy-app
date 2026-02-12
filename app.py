@@ -119,11 +119,11 @@ def main():
         # Use simple indices to map selection to pages for easier logic
         pages = [
             "Home", 
-            "Tier 1: Am I Ready?", 
-            "Tier 2: Portfolio vs Property", 
-            "Tier 3: Super Power",
-            "Tier 4: FIRE Strategy",
-            "Tier 5: Legacy & Estate",
+            "Tier 1: Clarity (Readiness)", 
+            "Tier 2: Direction (Strategy)", 
+            "Tier 3: Acceleration (Super)",
+            "Tier 4: Freedom (FIRE)",
+            "Tier 5: Protection (Legacy)",
             "Strategy Summary",
             "Cost of Waiting (Bonus)"
         ]
@@ -183,19 +183,19 @@ def main():
             st.markdown("### 🔍 Readiness Check")
             st.write("Assess your financial health and eligibility for advanced strategies in under 2 minutes.")
             if st.button("Start Assessment", key="btn_tier1", type="primary"):
-                go_to_page("Tier 1: Am I Ready?")
+                go_to_page("Tier 1: Clarity (Readiness)")
                 
         with c2:
             st.markdown("### 📈 Strategy Compare")
             st.write("Data-driven comparison of Debt Recycling vs. Investment Property.")
             if st.button("Compare Strategies", key="btn_tier2"):
-                 go_to_page("Tier 2: Portfolio vs Property")
+                 go_to_page("Tier 2: Direction (Strategy)")
 
         with c3:
             st.markdown("### ⚡ Super Power")
             st.write("The exponential impact of high growth super over time.")
             if st.button("Optimize Super", key="btn_tier3"):
-                go_to_page("Tier 3: Super Power")
+                go_to_page("Tier 3: Acceleration (Super)")
             
         st.divider()
         st.markdown("### 🎯 Identify Your Opportunity")
@@ -220,11 +220,11 @@ def main():
                  st.markdown("#### 🏛️ Strategy & Legacy")
                  st.write("Advanced preservation: FIRE bridges, Estate planning, and Recontribution strategies.")
                  if st.button("View Advanced Strategies", key="btn_tier4"):
-                     go_to_page("Tier 4: FIRE Strategy")
+                     go_to_page("Tier 4: Freedom (FIRE)")
             
         st.write("") # Spacing
         
-    elif selection == "Tier 1: Am I Ready?":
+    elif selection == "Tier 1: Clarity (Readiness)":
         data = render_tier1()
         
         if data:
@@ -261,34 +261,34 @@ def main():
             st.write("")
             st.markdown("### Ready for the next step?")
             if st.button("Proceed to Strategy Comparison 👉", type="primary"):
-                 go_to_page("Tier 2: Portfolio vs Property")
+                 go_to_page("Tier 2: Direction (Strategy)")
                  
-    elif selection == "Tier 2: Portfolio vs Property":
+    elif selection == "Tier 2: Direction (Strategy)":
         render_tier2()
         
         st.divider()
         st.markdown("### See the power of Super?")
         if st.button("Check Super Power 👉", type="primary"):
-            go_to_page("Tier 3: Super Power")
+            go_to_page("Tier 3: Acceleration (Super)")
         
-    elif selection == "Tier 3: Super Power":
+    elif selection == "Tier 3: Acceleration (Super)":
         render_tier3_super()
         
         st.divider()
         st.markdown("### Advanced: FIRE Strategy")
         if st.button("View FIRE Strategy 👉", type="primary"):
-            go_to_page("Tier 4: FIRE Strategy")
+            go_to_page("Tier 4: Freedom (FIRE)")
 
-    elif selection == "Tier 4: FIRE Strategy":
+    elif selection == "Tier 4: Freedom (FIRE)":
         from calculators.fire import render_fire_calculator
         render_fire_calculator()
         
         st.divider()
         st.markdown("### Next: Estate & Legacy")
         if st.button("View Legacy & Estate 👉", type="primary"):
-             go_to_page("Tier 5: Legacy & Estate")
+             go_to_page("Tier 5: Protection (Legacy)")
             
-    elif selection == "Tier 5: Legacy & Estate":
+    elif selection == "Tier 5: Protection (Legacy)":
         from calculators.tier5_legacy import render_tier5_legacy
         render_tier5_legacy()
         

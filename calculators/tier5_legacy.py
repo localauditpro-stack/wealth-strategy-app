@@ -9,9 +9,11 @@ def render_tier5_legacy():
     # --- 1. Header Compliance Warning ---
     st.warning("⚠️ **Hypothetical Scenarios**: The following results are hypothetical scenarios based on the data provided and historical tax facts. They are not a recommendation to acquire or dispose of a financial product.")
 
-    st.markdown("### 🏛️ Tier 5: Legacy & Estate Planning")
+    st.markdown("### 🏛️ Tier 5: Protection (Legacy)")
     st.markdown("""
-    Model advanced wealth preservation strategies including **FIRE (Financial Independence)**, **Estate Planning**, and **Tax Optimization**.
+    **"Is it safe?"**
+    
+    **Protect your legacy** with advanced preservation strategies including Estate Planning and Tax Optimization.
     """)
 
     # --- 2. Data Integration ---

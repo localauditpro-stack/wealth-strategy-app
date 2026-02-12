@@ -8,10 +8,12 @@ from utils.leads import render_lead_capture_form
 
 def render_tier1():
     """Renders the enhanced Tier 1 'Financial Readiness Assessment' calculator."""
-    st.markdown("### 🔍 Financial Readiness Assessment")
+    st.markdown("### 🔍 Tier 1: Clarity (Readiness)")
     st.markdown("""
-    Discover your readiness for advanced wealth strategies. Get a personalized score and recommendations 
-    based on your current financial position.
+    **"Am I ready for this?"**
+    
+    Before building a skyscraper, you need a solid foundation. 
+    This tool assesses your **financial clarity** and readiness for advanced wealth strategies.
     """)
     
     st.markdown("#### Your Financial Profile")

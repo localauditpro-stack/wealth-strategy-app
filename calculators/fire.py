@@ -8,9 +8,11 @@ from utils.compliance import render_footer_disclaimer
 def render_fire_calculator():
     """Renders the dedicated FIRE (Financial Independence, Retire Early) Calculator."""
     
-    st.markdown("### 🔥 Tier 4: FIRE Strategy")
+    st.markdown("### 🔥 Tier 4: Freedom (FIRE)")
     st.markdown("""
-    **Financial Independence, Retire Early (FIRE)** isn't just about saving—it's about building a bridge of capital to sustain you until you can access your Superannuation (Age 60).
+    **"When can I stop?"**
+    
+    **Financial Freedom** isn't just about saving—it's about building a bridge of capital to sustain you until you can access your Superannuation (Age 60).
     
     This calculator helps you determine if your **Outside-Super** assets can bridge the gap.
     """)

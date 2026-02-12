@@ -7,9 +7,12 @@ from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
 from utils.leads import render_lead_capture_form
 
 def render_tier2():
-    st.markdown("### 🎯 Debt-Funded Portfolio vs Investment Property")
+    st.markdown("### 🎯 Tier 2: Direction (Strategy)")
     st.markdown("""
-    **Strategy Comparison:** Compare the mathematical projections of using home equity for a share portfolio vs buying an investment property.
+    **"Where should I go?"**
+    
+    Compare the mathematical projections of using home equity for a share portfolio vs buying an investment property.
+    This gives you clear **financial direction**.
     
     ✅ **Tax-Deductible Interest** on investment loans  
     ✅ **No Stamp Duty, LMI, or Maintenance** for shares  

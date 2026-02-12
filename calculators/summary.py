@@ -33,7 +33,7 @@ def render_summary_page():
     if not profile:
         st.warning("⚠️ No profile data found. Please complete Tier 1 first.")
         if st.button("Go to Tier 1"):
-            go_to_page("Tier 1: Financial Readiness")
+            go_to_page("Tier 1: Clarity (Readiness)")
         return
 
     # --- 3. Dashboard Layout ---

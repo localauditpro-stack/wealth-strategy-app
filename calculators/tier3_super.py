@@ -15,9 +15,12 @@ def load_fund_data():
         return json.load(f)
 
 def render_tier3_super():
-    st.markdown("### ⚡ The Super Power: High Growth vs Balanced")
+    st.markdown("### ⚡ Tier 3: Acceleration (Super)")
     st.markdown("""
-    **For Young Australians:** See the **massive difference** between "set and forget" Balanced options vs High Growth over 30+ years.
+    **"How fast can I go?"**
+    
+    The power of compounding is **exponential**. See how optimizing your Super allocation **accelerates** your path to wealth.
+    """)
     
     The power of compounding is **exponential** - small differences in returns create **life-changing** wealth gaps.
     """)
