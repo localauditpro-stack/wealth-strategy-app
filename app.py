@@ -124,6 +124,7 @@ def main():
             "Tier 3: Super Power",
             "Tier 4: FIRE Strategy",
             "Tier 5: Legacy & Estate",
+            "Strategy Summary",
             "Cost of Waiting (Bonus)"
         ]
         
@@ -136,7 +137,7 @@ def main():
         selected_nav = option_menu(
             "Navigation", 
             pages, 
-            icons=['house', 'check-circle', 'graph-up-arrow', 'lightning', 'fire', 'bank', 'hourglass-split'], 
+            icons=['house', 'check-circle', 'graph-up-arrow', 'lightning', 'fire', 'bank', 'clipboard-check', 'hourglass-split'], 
             menu_icon="cast", 
             default_index=default_index,
             styles={
@@ -292,9 +293,13 @@ def main():
         render_tier5_legacy()
         
         st.divider()
-        st.markdown("### Bonus: The Cost of Delay")
-        if st.button("View Cost of Waiting 👉", type="primary"):
-            go_to_page("Cost of Waiting (Bonus)")
+        st.markdown("### 📋 Final Step: Your Strategy Snapshot")
+        if st.button("View Strategy Summary 👉", type="primary"):
+            go_to_page("Strategy Summary")
+            
+    elif selection == "Strategy Summary":
+        from calculators.summary import render_summary_page
+        render_summary_page()
         
     elif selection == "Cost of Waiting (Bonus)":
         render_cost_of_waiting()

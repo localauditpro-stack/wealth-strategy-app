@@ -174,6 +174,14 @@ def render_tier5_legacy():
             delta_color="normal" # Green/Positive
         )
 
+    # Save results to session state for Summary Page
+    st.session_state['legacy_results'] = {
+        'current_tax': estate_tax_liability,
+        'future_tax': future_tax,
+        'taxable_portion': taxable_portion,
+        'projected_balance': projected_balance
+    }
+
     # --- 4. Call to Action (CTA) ---
     st.divider()
     

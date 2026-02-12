@@ -247,6 +247,16 @@ def render_fire_calculator():
         
         gap = required_capital - fire_starting_balance
         
+        # Save results to session state for Summary Page
+        st.session_state['fire_results'] = {
+            'projected_wealth': fire_starting_balance,
+            'required_capital': required_capital,
+            'gap': gap,
+            'success': success,
+            'depletion_age': depletion_age if not success else None,
+            'fire_age': fire_age
+        }
+        
         col_target_1, col_target_2, col_target_3 = st.columns(3)
         col_target_1.metric(
             label=f"Required Wealth at Age {fire_age}", 
