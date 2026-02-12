@@ -32,8 +32,8 @@ def render_cost_of_waiting():
         
         st.caption(f"""
         **Assumptions:**
-        - Growth: {growth_rate*100:.1f}% p.a.
-        - Yield: {yield_rate*100:.1f}% p.a.
+        - Growth: {growth_rate*100:.1f}% p.a. (Source: ASX Long Term Investing Report)
+        - Yield: {yield_rate*100:.1f}% p.a. (Source: RBA Bulletin - Yield ex-franking)
         - **Total: {total_return*100:.1f}% p.a.**
         """)
         
@@ -152,7 +152,7 @@ def render_cost_of_waiting():
             future_monthly = parse_currency_input("Resulting Monthly Contribution ($)", 1000, key="fut_monthly")
             future_years = st.slider("Investment Horizon (Years)", 5, 40, 20, key="fut_years")
         with c2:
-            future_rate = st.slider("Assumed Return (%)", 1.0, 15.0, 11.0, 0.5, key="fut_rate") / 100
+            future_rate = st.slider("Assumed Return (%)", 1.0, 15.0, 11.0, 0.5, key="fut_rate", help="Source: Long-term high growth assumption (Aggressive portfolio). Note: Past performance is not reliable indicator.") / 100
     
     if st.button("Calculate Future Cost of Delay", type="primary"):
         # Calculate Base Case (Start Now)

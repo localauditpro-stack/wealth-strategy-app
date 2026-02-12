@@ -73,8 +73,8 @@ def render_tier3_super():
         # Use profile income as default salary
         annual_salary = parse_currency_input("Annual Salary ($)", profile.get('income', 75000), key="salary")
     with col3:
-        employer_contrib = st.slider("Employer Contribution (%)", 9.5, 15.0, 11.5, 0.5, help="Super Guarantee is 11.5% in 2025", key="employer") / 100
-        voluntary_contrib = parse_currency_input("Voluntary Contributions ($/year)", 0, help_text="Extra you add", key="voluntary")
+        employer_contrib = st.slider("Employer Contribution (%)", 9.5, 15.0, 11.5, 0.5, help="Source: ATO Super Guarantee rate (11.5% for FY2024-25, rising to 12% on 1 July 2025).", key="employer") / 100
+        voluntary_contrib = parse_currency_input("Voluntary Contributions ($/year)", 0, help_text="Extra you add (Salary Sacrifice or Personal Deductible)", key="voluntary")
     
     
     # Investment Options - sliders now update with fund changes!
@@ -89,7 +89,7 @@ def render_tier3_super():
             float(high_growth_default), 
             0.1, 
             key=f"hg_{selected_fund}",  # Key includes fund name so it resets when fund changes
-            help=f"{selected_fund}'s 10-year avg: {high_growth_default:.1f}%"
+            help=f"Source: {selected_fund} Product Disclosure Statement (10-year avg return for High Growth option)."
         ) / 100
     with col_b:
         st.warning("⚖️ **Balanced Option**")
@@ -99,12 +99,12 @@ def render_tier3_super():
             float(balanced_default), 
             0.1, 
             key=f"bal_{selected_fund}",  # Key includes fund name so it resets when fund changes
-            help=f"{selected_fund}'s 10-year avg: {balanced_default:.1f}%"
+            help=f"Source: {selected_fund} Product Disclosure Statement (10-year avg return for Balanced option)."
         ) / 100
     
     
     with st.expander("⚙️ Advanced: Catch-up & Salary Growth"):
-        salary_growth = st.number_input("Salary Growth (% p.a.)", value=3.0, step=0.5, key="sal_growth") / 100
+        salary_growth = st.number_input("Salary Growth (% p.a.)", value=3.0, step=0.5, key="sal_growth", help="Source: ABS Wage Price Index (long-term assumption ~3%).") / 100
         
         st.markdown("---")
         st.markdown("#### 🏃‍♂️ Concessional Catch-up")

@@ -40,9 +40,9 @@ def render_fire_calculator():
         
     with col4:
         st.subheader("📈 Assumptions")
-        return_rate = st.slider("Invest. Return (%)", 2.0, 12.0, 7.0, 0.5) / 100
-        inflation_rate = st.slider("Inflation (%)", 1.0, 8.0, 3.0, 0.5) / 100
-        tax_rate = st.slider("Avg Tax on Gains/Yield (%)", 0.0, 47.0, 20.0, 1.0, help="Estimate of tax drag on returns") / 100
+        return_rate = st.slider("Invest. Return (%)", 2.0, 12.0, 7.0, 0.5, help="Source: Long-term nominal return assumption (ASX/Vanguard 30y data).") / 100
+        inflation_rate = st.slider("Inflation (%)", 1.0, 8.0, 3.0, 0.5, help="Source: RBA Inflation Target Band (2-3%). Used to adjust future spending needs.") / 100
+        tax_rate = st.slider("Avg Tax on Gains/Yield (%)", 0.0, 47.0, 20.0, 1.0, help="Estimate of effective tax on earnings (considering CGT discounts and franking credits).") / 100
         
     # Real Return = ((1 + Return) / (1 + Inflation)) - 1  ... Roughly Return - Inflation
     # But we also have TAX.

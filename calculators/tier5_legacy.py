@@ -46,7 +46,7 @@ def render_tier5_legacy():
         st.subheader("💰 Asset Base")
         super_balance = parse_currency_input("Current Super Balance ($)", default_super_balance, key="t4_super")
         # Taxable portion input (Default 100% for general advice simplicity, but allow edit)
-        taxable_portion = st.slider("Taxable Component of Super (%)", 0, 100, 85, help="Percentage of super balance subject to death benefits tax (usually 100% minus non-concessional contributions)") / 100
+        taxable_portion = st.slider("Taxable Component of Super (%)", 0, 100, 85, help="Source: ATO data implies high taxable components for most accumulation accounts (unless recontribution strategies used). Taxed at 15% + 2% Medicare for non-dependants.") / 100
 
     st.divider()
 
@@ -108,12 +108,40 @@ def render_tier5_legacy():
         
         fig_estate.update_layout(
             barmode='overlay', 
-            title="Impact of Death Benefits Tax",
+            title="Impact of Death Benefits Tax (Today)",
             height=200,
             margin=dict(l=20, r=20, t=30, b=20),
             legend=dict(orientation="h", y=1.1)
         )
         st.plotly_chart(fig_estate, use_container_width=True)
+
+    # --- Future Projection (The "Wake Up Call") ---
+    
+    # Calculate Projected Balance (if not already simulated)
+    projected_balance = 0
+    if tier3_results and 'hg_projection' in tier3_results:
+         projected_balance = tier3_results['hg_projection']['balance'][-1]
+    elif tier3_results and 'bal_projection' in tier3_results:
+         projected_balance = tier3_results['bal_projection']['balance'][-1]
+    else:
+        # Simple Fallback: 7% return + $15k contrib until 65
+        years_to_65 = max(0, 65 - current_age)
+        if years_to_65 > 0:
+            r = 0.07
+            c = 15000 
+            projected_balance = super_balance * ((1 + r) ** years_to_65)
+            projected_balance += c * (((1 + r) ** years_to_65 - 1) / r)
+        else:
+            projected_balance = super_balance
+
+    future_tax = projected_balance * taxable_portion * 0.17
+    
+    st.info(f"""
+    🔮 **Future Projection:** If your balance grows to **${projected_balance/1000000:.1f}M** by retirement, 
+    the potential tax bill for your beneficiaries swells to **${future_tax:,.0f}**.
+    
+    *Legacy planning isn't just for today—it's about protecting your future wealth.*
+    """)
 
     st.divider()
 

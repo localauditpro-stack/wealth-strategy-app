@@ -85,8 +85,8 @@ def render_tier2():
             dr_amount = parse_currency_input("Investment Amount ($)", DEFAULT_ASSET_VALUE, help_text="Defaults to match property value for fair comparison")
             
             st.markdown("**Portfolio Assumptions (Diversified 70/30):**")
-            dr_growth = st.slider("Expected Growth (%)", 4.0, 12.0, 8.5, 0.1, key="dr_growth", help="Historical Average ~8.5%") / 100
-            dr_yield = st.slider("Dividend Yield (%)", 1.0, 8.0, 2.5, 0.1, key="dr_yield", help="Typical Yield ~2.5% + Franking") / 100
+            dr_growth = st.slider("Expected Growth (%)", 4.0, 12.0, 8.5, 0.1, key="dr_growth", help="Source: ASX Long Term Investing Report (~8.5-9% 10y avg for Aus Shares).") / 100
+            dr_yield = st.slider("Dividend Yield (%)", 1.0, 8.0, 2.5, 0.1, key="dr_yield", help="Source: RBA Bulletin. Typical yield ex-franking for Aus market.") / 100
 
         # -- Strategy B: Property --
         with col_strat2:
@@ -102,8 +102,8 @@ def render_tier2():
             
             st.markdown(f"**Assumptions ({ip_state} 10y Avg):**")
             st.caption(f"ℹ️ Applying {ip_state} market data: **Growth {market_data['growth']}%**, **Yield {market_data['yield']}%**")
-            ip_growth = st.slider("Property Growth (%)", 0.0, 10.0, float(market_data['growth']), 0.1, key=f"ip_growth_{ip_state}") / 100
-            ip_yield = st.slider("Rental Yield (%)", 0.5, 7.0, float(market_data['yield']), 0.1, key=f"ip_yield_{ip_state}") / 100
+            ip_growth = st.slider("Property Growth (%)", 0.0, 10.0, float(market_data['growth']), 0.1, key=f"ip_growth_{ip_state}", help=f"Source: CoreLogic Hedonic Home Value Index (10y annualized growth for {ip_state}).") / 100
+            ip_yield = st.slider("Rental Yield (%)", 0.5, 7.0, float(market_data['yield']), 0.1, key=f"ip_yield_{ip_state}", help=f"Source: SQM Research / CoreLogic (Gross rental yield estimate for {ip_state}).") / 100
         
             
         st.markdown("#### 4. Loan Settings")
@@ -118,14 +118,14 @@ def render_tier2():
             c_a1, c_a2, c_a3 = st.columns(3)
             with c_a1:
                 st.markdown("**Property Expenses**")
-                maint_rate = st.number_input("Maintenance (% of Value)", value=1.0, step=0.1) / 100
-                mgmt_rate = st.number_input("Mgmt Fee (% of Rent)", value=7.0, step=0.5) / 100
+                maint_rate = st.number_input("Maintenance (% of Value)", value=1.0, step=0.1, help="Industry rule of thumb: 1% of property value p.a.") / 100
+                mgmt_rate = st.number_input("Mgmt Fee (% of Rent)", value=7.0, step=0.5, help="Typical agency management rate.") / 100
             with c_a2:
                 st.markdown("**Fixed Costs**")
-                rates = parse_currency_input("Rates & Insurance ($/yr)", 2500)
+                rates = parse_currency_input("Rates & Insurance ($/yr)", 2500, help_text="Council rates, water, and building insurance.")
             with c_a3:
                 st.markdown("**Economic**")
-                inflation = st.number_input("Inflation Rate (%)", value=3.0) / 100
+                inflation = st.number_input("Inflation Rate (%)", value=3.0, help="Source: RBA Inflation Target Band (2-3%).") / 100
                 
         st.divider()
         
