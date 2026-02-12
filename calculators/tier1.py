@@ -200,6 +200,7 @@ def render_tier1():
             st.markdown("**🎯 Risk Capacity Score**")
             st.progress(scores['risk'] / 20)
             st.caption(f"{scores['risk']}/20 points • {results['risk_tolerance']} investor")
+            st.caption(get_projection_disclaimer())
         
         # Strategy Recommendations
         st.markdown("### 💡 Recommended Strategies")
@@ -466,6 +467,8 @@ def show_next_steps(assessment):
         - Read: Debt Reduction Strategies
         - Watch: Financial Basics Webinar
         """)
+
+    render_footer_disclaimer()
 
 
 def analyze_tier1(data):

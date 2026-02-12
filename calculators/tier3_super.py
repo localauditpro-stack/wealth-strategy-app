@@ -4,7 +4,7 @@ import pandas as pd
 import json
 import os
 from utils.ui import parse_currency_input
-from utils.compliance import render_footer_disclaimer
+from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
 from utils.leads import render_lead_capture_form
 
 # Load fund fee data
@@ -319,6 +319,7 @@ def render_tier3_super():
             )
             
             st.plotly_chart(fig2, use_container_width=True)
+            st.caption(get_projection_disclaimer())
             
             # Show final balances comparison
             st.markdown("#### Final Balances at Retirement")
@@ -462,4 +463,7 @@ def calculate_super_projection(balance, salary, employer_rate, voluntary, return
         # Salary growth
         current_salary *= (1 + salary_growth)
     
+    
     return {'balance': balances, 'tax_saved_catchup': tax_saved_catchup}
+
+    render_footer_disclaimer()

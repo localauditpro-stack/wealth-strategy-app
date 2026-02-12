@@ -116,6 +116,7 @@ def render_tier5_legacy():
             legend=dict(orientation="h", y=1.1)
         )
         st.plotly_chart(fig_estate, use_container_width=True)
+        st.caption(get_projection_disclaimer())
 
     # --- Future Projection (The "Wake Up Call") ---
     

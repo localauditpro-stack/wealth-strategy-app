@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import numpy_financial as npf
 from utils.ui import parse_currency_input
-from utils.compliance import render_footer_disclaimer
+from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
 
 def render_fire_calculator():
     """Renders the dedicated FIRE (Financial Independence, Retire Early) Calculator."""
@@ -205,6 +205,7 @@ def render_fire_calculator():
             )
 
         st.plotly_chart(fig, use_container_width=True)
+        st.caption(get_projection_disclaimer())
         
         # Analysis Text
         if not success:

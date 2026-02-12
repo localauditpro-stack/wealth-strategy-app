@@ -249,6 +249,7 @@ def render_tier2():
                 height=400
             )
             st.plotly_chart(fig_wealth, use_container_width=True)
+            st.caption(get_projection_disclaimer())
             
             # New Tax Comparison Chart
             st.markdown("### 💸 Annual Tax Impact Comparison")
@@ -487,5 +488,7 @@ def calculate_ip_projection(price, loan, growth, yield_rate, interest_rate, tax_
         # Net Equity
         net_equity = current_val - current_loan
         net_wealth.append(net_equity)
+        
+    render_footer_disclaimer()
         
     return {"net_wealth": net_wealth, "tax_saved": tax_saved_cum, "tax_saved_yearly": tax_saved_yearly, "loan_balance": loan_balances}
