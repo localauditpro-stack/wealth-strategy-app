@@ -5,3 +5,4 @@ reportlab
 numpy-financial
 streamlit-option-menu
 kaleido==0.2.1
+packaging
