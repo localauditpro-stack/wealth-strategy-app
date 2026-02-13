@@ -83,9 +83,23 @@ def render_tier2():
         
         # -- Strategy A: Shares --
         with col_strat1:
-            st.info("📊 **Strategy A: Debt-Funded Share Portfolio**")
-            # Default to same as property for like-for-like comparison
-            dr_amount = parse_currency_input("Investment Amount ($)", DEFAULT_ASSET_VALUE, help_text="Defaults to match property value for fair comparison")
+            st.info("📊 **Strategy A: Shares / Debt Recycling**")
+            
+            # Debt Recycling Toggle
+            enable_dr = st.toggle("Enable Debt Recycling Mode", value=False, key="enable_dr", help="Model the tax benefits of recycling a specific tranche of debt (e.g. $50k-$100k).")
+            
+            if enable_dr:
+                st.success("""
+                **🔄 Implementation Strategy:**
+                1.  Accumulate **Savings** (e.g. $100k).
+                2.  **Pay Down** Non-Deductible Home Loan.
+                3.  **Redraw** same amount to create a "Tax-Deductible" Split.
+                4.  **Invest** in a Diversified Portfolio.
+                """)
+                dr_amount = parse_currency_input("Recycle Tranche Amount ($)", 100000, help_text="Amount to recycle (e.g. $50k - $100k)")
+            else:
+                # Default to same as property for like-for-like comparison
+                dr_amount = parse_currency_input("Investment Amount ($)", DEFAULT_ASSET_VALUE, help_text="Defaults to match property value for fair comparison")
             
             st.markdown("**Portfolio Assumptions (Diversified 70/30):**")
             dr_growth = st.slider("Expected Growth (%)", 4.0, 12.0, 8.5, 0.1, key="dr_growth", help="Source: ASX Long Term Investing Report (~8.5-9% 10y avg for Aus Shares).") / 100
@@ -248,7 +262,13 @@ def render_tier2():
                 ip_wealth_display.append(ip_val / factor)
                 
             # Update Metrics with Final Adjusted Values
-            k1.metric("Option A: Shares Net Wealth (10y)", f"${dr_wealth_display[-1]:,.0f}", delta=f"Loan Rem: ${dr_results['loan_balance'][-1]:,.0f}")
+            if st.session_state.get("enable_dr"):
+                # Special display for Recycling
+                tax_generated = sum(dr_results['tax_saved_yearly'])
+                k1.metric("Strategy A: Debt Recycling", f"${dr_wealth_display[-1]:,.0f}", delta=f"ATO Benefit: +${tax_generated:,.0f}")
+            else:
+                k1.metric("Option A: Shares Net Wealth (10y)", f"${dr_wealth_display[-1]:,.0f}", delta=f"Loan Rem: ${dr_results['loan_balance'][-1]:,.0f}")
+            
             k2.metric("Option B: Property Net Wealth (10y)", f"${ip_wealth_display[-1]:,.0f}", delta=f"Loan Rem: ${ip_results['loan_balance'][-1]:,.0f}", delta_color="normal")
 
             # Chart
