@@ -164,65 +164,13 @@ def main():
         st.rerun()
 
     # Main Content Rendering based on Session State
+    from calculators.home import render_home
+
+    # Main Content Rendering based on Session State
     selection = st.session_state.page_selection
 
     if selection == "Home":
-        # Hero Section
-        st.markdown("""
-            <div class="hero">
-                <h1>Wealth Strategy Generator</h1>
-                <p>Discover optimized financial strategies tailored for Australian investors. compare debt recycling, investment properties, and more with precision.</p>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        # Feature Grid with Interaction
-        st.markdown("### 🚀 Start Your Journey")
-        
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            st.markdown("### 🔍 Readiness Check")
-            st.write("Assess your financial health and eligibility for advanced strategies in under 2 minutes.")
-            if st.button("Start Assessment", key="btn_tier1", type="primary"):
-                go_to_page("Tier 1: Clarity (Readiness)")
-                
-        with c2:
-            st.markdown("### 📈 Strategy Compare")
-            st.write("Data-driven comparison of Debt Recycling vs. Investment Property.")
-            if st.button("Compare Strategies", key="btn_tier2"):
-                 go_to_page("Tier 2: Direction (Strategy)")
-
-        with c3:
-            st.markdown("### ⚡ Super Power")
-            st.write("The exponential impact of high growth super over time.")
-            if st.button("Optimize Super", key="btn_tier3"):
-                go_to_page("Tier 3: Acceleration (Super)")
-            
-        st.divider()
-        st.markdown("### 🎯 Identify Your Opportunity")
-
-        # Educational Grid
-        e1, e2 = st.columns(2)
-        with e1:
-             with st.container(border=True):
-                 st.markdown("#### 💸 The \"Silent\" Tax Leak")
-                 st.write("Your 47% marginal rate is eroding your compound growth. See the difference structuring makes.")
-                 
-             with st.container(border=True):
-                 st.markdown("#### 🏠 Equity: Idle or Working?")
-                 st.write("Is your home's capital appreciation locked away, or are you recycling it into wealth?")
-
-        with e2:
-             with st.container(border=True):
-                 st.markdown("#### 📉 The $200k Super Gap")
-                 st.write("A 1% difference in fees and performance can cost a high-earner six figures by retirement.")
-                 
-             with st.container(border=True):
-                 st.markdown("#### 🏛️ Strategy & Legacy")
-                 st.write("Advanced preservation: FIRE bridges, Estate planning, and Recontribution strategies.")
-                 if st.button("View Advanced Strategies", key="btn_tier4"):
-                     go_to_page("Tier 4: Freedom (FIRE)")
-            
-        st.write("") # Spacing
+        render_home()
         
     elif selection == "Tier 1: Clarity (Readiness)":
         data = render_tier1()
