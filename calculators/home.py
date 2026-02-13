@@ -72,9 +72,9 @@ def render_home():
     
     e1, e2 = st.columns(2)
     with e1:
-         st.info("**The Silent Tax Leak:** \n\nEarning **$180,000+**? You're losing nearly half your extra income to tax. Structural changes can convert personal debt into tax-deductible debt.")
+         st.info("**The Silent Tax Leak:** \n\nEarning **\$180,000+**? You're losing nearly half your extra income to tax. Structural changes can convert personal debt into tax-deductible debt.")
     with e2:
-         st.warning("**The Cost of Laziness:** \n\nLeaving **$100,000** in cash vs. offsetting a mortgage vs. investing in Super can mean a difference of **over $500,000** during a 20 year period.")
+         st.warning("**The Cost of Laziness:** \n\nLeaving **\$100,000** in cash vs. offsetting a mortgage vs. investing in Super can mean a difference of **over \$500,000** during a 20 year period.")
 
     st.markdown("---")
     st.caption("Select a pillar above or use the sidebar navigation to begin.")
