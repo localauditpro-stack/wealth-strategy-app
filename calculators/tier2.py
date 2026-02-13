@@ -223,21 +223,41 @@ def render_tier2():
             dr_loan_rem = dr_results['loan_balance'][-1]
             ip_loan_rem = ip_results['loan_balance'][-1]
             
-            k1.metric("Option A: Shares Net Wealth (10y)", f"${dr_final:,.0f}", delta=f"Loan Rem: ${dr_loan_rem:,.0f}")
-            k2.metric("Option B: Property Net Wealth (10y)", f"${ip_final:,.0f}", delta=f"Loan Rem: ${ip_loan_rem:,.0f}", delta_color="normal")
-            
             # Year 1 Tax Impact
             ip_tax_y1 = ip_results['tax_saved_yearly'][0]
             k3.metric("Year 1 Tax Benefit (Property)", f"${ip_tax_y1:,.0f}", help="Positive means tax refund/saving. Negative means tax payable.")
 
-            # Chart
+            # Inflation Toggle
+            st.markdown("---")
+            col_chart_header, col_toggle = st.columns([3, 1])
+            with col_chart_header:
+                 st.markdown("### 📈 Wealth Projection")
+            with col_toggle:
+                 show_real = st.toggle("Show in Today's Dollars", value=False, help="Adjusts future values for inflation (2.5% p.a.) to show purchasing power in today's terms.")
+            
+            # Adjustment Logic
             years = list(range(1, 11))
+            inflation_rate = 0.025 if show_real else 0.0
+            
+            dr_wealth_display = []
+            ip_wealth_display = []
+            
+            for i, (dr_val, ip_val) in enumerate(zip(dr_results['net_wealth'], ip_results['net_wealth'])):
+                factor = (1 + inflation_rate) ** (i + 1)
+                dr_wealth_display.append(dr_val / factor)
+                ip_wealth_display.append(ip_val / factor)
+                
+            # Update Metrics with Final Adjusted Values
+            k1.metric("Option A: Shares Net Wealth (10y)", f"${dr_wealth_display[-1]:,.0f}", delta=f"Loan Rem: ${dr_results['loan_balance'][-1]:,.0f}")
+            k2.metric("Option B: Property Net Wealth (10y)", f"${ip_wealth_display[-1]:,.0f}", delta=f"Loan Rem: ${ip_results['loan_balance'][-1]:,.0f}", delta_color="normal")
+
+            # Chart
             fig_wealth = go.Figure()
             # Gold for Shares (Growth/Opportunity)
-            fig_wealth.add_trace(go.Scatter(x=years, y=dr_results['net_wealth'], name="Debt Recycling (Shares)", 
+            fig_wealth.add_trace(go.Scatter(x=years, y=dr_wealth_display, name="Debt Recycling (Shares)", 
                                     line={'color': '#C5A059', 'width': 4}, mode='lines+markers'))
             # Navy for Property (Stability/Foundation)
-            fig_wealth.add_trace(go.Scatter(x=years, y=ip_results['net_wealth'], name="Investment Property", 
+            fig_wealth.add_trace(go.Scatter(x=years, y=ip_wealth_display, name="Investment Property", 
                                     line={'color': '#002B5C', 'width': 4}, mode='lines+markers'))
                                     
             fig_wealth.update_layout(
@@ -279,23 +299,26 @@ def render_tier2():
                 """)
             
             # Recommendation Logic (Basic)
-            diff = abs(dr_final - ip_final)
-            # Scenario Logic (Neutral)
-            diff = abs(dr_final - ip_final)
-            higher_scenario = "Property Scenario" if ip_final > dr_final else "Share Scenario"
+            dr_final_adj = dr_wealth_display[-1]
+            ip_final_adj = ip_wealth_display[-1]
+            
+            diff = abs(dr_final_adj - ip_final_adj)
+            higher_scenario = "Property Scenario" if ip_final_adj > dr_final_adj else "Share Scenario"
+            
+            val_type = "Real (Today's)" if show_real else "Nominal"
             
             if higher_scenario == "Share Scenario":
                 st.success(f"""
-                💡 **Scenario Analysis:** The **Share Portfolio model** projects a result **${diff:,.0f} higher** over 10 years based on these inputs.
+                💡 **Scenario Analysis:** The **Share Portfolio model** projects a result **\${diff:,.0f} higher** over 10 years ({val_type} Value).
                 
                 **Key Drivers in this Model:** 
                 - Interest deductibility
                 - Tax flexibility (CGT management)
                 - Liquidity differences
-                - Absence of stamp duty (**${stamp_duty:,.0f}**) and ongoing property costs
+                - Absence of stamp duty (**\${stamp_duty:,.0f}**) and ongoing property costs
                 """)
             else:
-                st.info(f"💡 **Scenario Analysis:** The **Property model** projects a result **${diff:,.0f} higher** over 10 years based on these inputs. Consider also liquidity and tax flexibility.")
+                st.info(f"💡 **Scenario Analysis:** The **Property model** projects a result **\${diff:,.0f} higher** over 10 years ({val_type} Value). Consider also liquidity and tax flexibility.")
 
         with tab2:
             # GATED CONTENT

@@ -180,17 +180,33 @@ def render_tier3_super():
         # Results
         st.markdown("## 📊 Your Super Future")
         
+        # Inflation Toggle
+        col_res_header, col_toggle = st.columns([3, 1])
+        with col_res_header:
+             st.write("Compare the projected growth of your Super over time.")
+        with col_toggle:
+             show_real = st.toggle("Show in Today's Dollars", value=False, help="Adjusts future values for inflation (2.5% p.a.) to show for purchasing power parity.")
+        
+        inflation_rate = 0.025 if show_real else 0.0
+        
         tab1, tab2, tab3 = st.tabs(["📈 The Divergence", "🏆 Fund Comparison", "📋 Year-by-Year"])
         
         with tab1:
             # KPIs
             k1, k2, k3 = st.columns(3)
-            hg_final = hg_projection['balance'][-1]
-            bal_final = bal_projection['balance'][-1]
-            difference = hg_final - bal_final
             
-            k1.metric("High Growth Final Balance", f"${hg_final:,.0f}", delta=f"+${hg_final - current_balance:,.0f}")
-            k2.metric("Balanced Final Balance", f"${bal_final:,.0f}", delta=f"+${bal_final - current_balance:,.0f}")
+            # Adjust Final Balances
+            years_elapsed = retirement_age - current_age
+            discount_factor = (1 + inflation_rate) ** years_elapsed
+            
+            hg_final = hg_projection['balance'][-1] / discount_factor
+            bal_final = bal_projection['balance'][-1] / discount_factor
+            
+            difference = hg_final - bal_final
+            current_balance_adj = current_balance # Present value is already present value
+            
+            k1.metric("High Growth Final Balance", f"${hg_final:,.0f}", delta=f"+${hg_final - current_balance_adj:,.0f}")
+            k2.metric("Balanced Final Balance", f"${bal_final:,.0f}", delta=f"+${bal_final - current_balance_adj:,.0f}")
             
             tax_saved = results.get('tax_saved_catchup', 0)
             if tax_saved > 0:
@@ -200,11 +216,21 @@ def render_tier3_super():
             
             # Chart 1: Growth Lines
             years = list(range(current_age, retirement_age + 1))
+            
+            # Prepare Display Data
+            hg_display = []
+            bal_display = []
+            
+            for i, (hg, bal) in enumerate(zip(hg_projection['balance'], bal_projection['balance'])):
+                factor = (1 + inflation_rate) ** i
+                hg_display.append(hg / factor)
+                bal_display.append(bal / factor)
+            
             fig = go.Figure()
             
             fig.add_trace(go.Scatter(
                 x=years, 
-                y=hg_projection['balance'], 
+                y=hg_display, 
                 name="High Growth",
                 line={'color': '#C5A059', 'width': 4},
                 mode='lines',
@@ -213,7 +239,7 @@ def render_tier3_super():
             
             fig.add_trace(go.Scatter(
                 x=years, 
-                y=bal_projection['balance'], 
+                y=bal_display, 
                 name="Balanced",
                 line={'color': '#002B5C', 'width': 4, 'dash': 'dash'},
                 mode='lines'
@@ -230,7 +256,7 @@ def render_tier3_super():
             st.plotly_chart(fig, use_container_width=True)
 
             # Chart 2: The Gap (Difference)
-            gap_values = [h - b for h, b in zip(hg_projection['balance'], bal_projection['balance'])]
+            gap_values = [h - b for h, b in zip(hg_display, bal_display)]
             
             fig_gap = go.Figure()
             fig_gap.add_trace(go.Bar(
@@ -296,10 +322,13 @@ def render_tier3_super():
             colors = ['#C5A059', '#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#E91E63']
             
             for idx, (fund_name, balances) in enumerate(fund_projections.items()):
+                # Adjust for inflation
+                adj_balances = [b / ((1 + inflation_rate) ** i) for i, b in enumerate(balances)]
+                
                 is_user_fund = (fund_name == selected_fund)
                 fig2.add_trace(go.Scatter(
                     x=years,
-                    y=balances,
+                    y=adj_balances,
                     name=f"{fund_name} {'(YOUR FUND)' if is_user_fund else ''}",
                     line={
                         'color': colors[idx % len(colors)],
@@ -325,13 +354,17 @@ def render_tier3_super():
             st.markdown("#### Final Balances at Retirement")
             comparison_data = []
             for fund_name in comparison_funds:
-                final_balance = fund_projections[fund_name][-1]
+                final_balance = fund_projections[fund_name][-1] / discount_factor # Apply same discount
                 fund_return = fund_data[fund_name]['return_high_growth_10y'] * 100
+                
+                # Compare against adjusted user fund
+                user_final_adj = fund_projections[selected_fund][-1] / discount_factor
+                
                 comparison_data.append({
                     'Fund': f"{fund_name} {'⭐ (You)' if fund_name == selected_fund else ''}",
                     'Final Balance': final_balance,
                     '10-Year Return': f"{fund_return:.2f}%",
-                    'vs Your Fund': final_balance - fund_projections[selected_fund][-1]
+                    'vs Your Fund': final_balance - user_final_adj
                 })
             
             df_comparison = pd.DataFrame(comparison_data)
