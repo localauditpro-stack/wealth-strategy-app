@@ -45,10 +45,15 @@ def main():
     # --- CUSTOM CSS FOR APT WEALTH THEME ---
     st.markdown("""
         <style>
+        /* Global Font Enforcement */
+        html, body, [class*="css"] {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+        }
+
         /* Main Headers */
         h1, h2, h3, h4, h5, h6 {
             color: #1A2B3C !important; /* Apt Deep Navy */
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
         }
         
         /* Metric Cards - Target the value and label */
