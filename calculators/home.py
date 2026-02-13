@@ -30,6 +30,7 @@ def render_home():
 
     # Phase 1: Foundation
     st.markdown("### Phase 1: Foundation")
+    st.write("Building wealth is like building a house. You cannot build the roof before the slab is poured. Phase 1 is about **Clarity**, **Cashflow Management**, and establishing a **Safety Buffer**.")
     
     # Full-width card for Phase 1
     with st.container(border=True):
@@ -40,7 +41,7 @@ def render_home():
             st.info("**Start Here**")
         with c2:
             st.markdown("**Why it matters:** You can't build a skyscraper on quicksand. Before engaging complex tax structures or debt recycling, you must quantify your **Readiness Score**.")
-            st.write("Do you have the surplus income, equity buffer, and risk tolerance to support leverage?")
+            st.write("Do you have the surplus income to service debt? Is your risk tolerance aligned with aggressive growth?")
             if st.button("Start Assessment (Tier 1) 👉", key="btn_p1", type="primary"):
                 go_to_page("Tier 1: Clarity (Readiness)")
 
@@ -69,6 +70,7 @@ def render_home():
 
     # Phase 2: Growth & Acceleration
     st.markdown("### Phase 2: Growth & Acceleration")
+    st.write("With a strong foundation, we apply **Leverage** and **Tax Efficiency**. The goal is to control more assets with less of your own money, and ensure the ATO contributes to your wealth journey.")
     c_g1, c_g2 = st.columns(2)
     
     with c_g1:
@@ -78,8 +80,8 @@ def render_home():
             st.markdown("""
             <div class="card-content">
                 <div>
-                    <p><b>🕵️ The Dilemma:</b><br>Should I buy an investment property or a share portfolio?</p>
-                    <p><b>✨ The Solution:</b><br>Compare the long-term outcomes of <b>Debt Recycling</b> vs. <b>Leveraged Property</b>.</p>
+                    <p><b>🕵️ The Dilemma:</b><br>Should I buy a <b>$1M investment property</b> or a <b>share portfolio</b>?</p>
+                    <p><b>✨ The Solution:</b><br>We model the 10-year outcome of <b>Debt Recycling</b> vs. <b>Leveraged Property</b> to find the winner.</p>
                 </div>
                 <div class="metric-highlight">
                     🎯 Key Metric: 10-Year Net Wealth Gap
@@ -96,8 +98,8 @@ def render_home():
             st.markdown("""
             <div class="card-content">
                 <div>
-                    <p><b>🔒 The Dilemma:</b><br>Super feels locked away, so I usually ignore it.</p>
-                    <p><b>🚀 The Reality:</b><br>It is your most powerful tax shelter. Small changes now compound massively.</p>
+                    <p><b>🔒 The Dilemma:</b><br>Super feels like a 'retirement fund' I can't touch yet.</p>
+                    <p><b>🚀 The Reality:</b><br>It is a tax shelter. We compare a <b>'Default'</b> vs <b>'Optimised'</b> path to reveal the cost of inaction.</p>
                 </div>
                 <div class="metric-highlight">
                     ⏳ Key Metric: The Cost of Waiting
@@ -110,6 +112,7 @@ def render_home():
 
     # Phase 3: Freedom & Legacy
     st.markdown("### Phase 3: Freedom & Legacy")
+    st.write("The endgame is **Optionality**. Translating a high net worth into a reliable income stream that replaces your salary, and ensuring that wealth passes to the next generation intact.")
     c_f1, c_f2 = st.columns(2)
     
     with c_f1:
@@ -120,7 +123,7 @@ def render_home():
             <div class="card-content">
                 <div>
                     <p><b>🏖️ The Goal:</b><br>Work becomes optional.</p>
-                    <p><b>🌉 The Mechanism:</b><br>Calculate your "FI Number" and build a <b>"Bridge"</b> to get you there.</p>
+                    <p><b>🌉 The Mechanism:</b><br>Build a <b>"Bridge"</b> to retire <i>before</i> you can access Super. Withstand <b>"Sequence of Returns"</b> risk.</p>
                 </div>
                 <div class="metric-highlight">
                     🔥 Key Metric: Years to Financial Freedom
@@ -137,7 +140,7 @@ def render_home():
             <div class="card-content">
                 <div>
                     <p><b>⚠️ The Risk:</b><br>"Death Benefits Tax" can take <b>17%</b> of your Super to the ATO.</p>
-                    <p><b>🛡️ The Fix:</b><br>Recontribution strategies and testamentary trusts to protect it.</p>
+                    <p><b>🛡️ The Fix:</b><br>Recontribution strategies and testamentary trusts to protect your <b>Fortress</b>.</p>
                 </div>
                 <div class="metric-highlight">
                     💰 Key Metric: Projected Tax Saving

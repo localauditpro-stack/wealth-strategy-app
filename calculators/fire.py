@@ -153,51 +153,113 @@ def render_fire_calculator():
             phase.append("Post-Super Access")
             age += 1
            
+        # Store results in session state
+        st.session_state['fire_results'] = {
+            'ages': ages,
+            'balances': balances,
+            'needs': needs,
+            'fire_starting_balance': fire_starting_balance,
+            'depletion_age': depletion_age,
+            'success': success,
+            'years_to_fire': years_to_fire,
+            'years_in_bridge': years_in_bridge,
+            'inflation_rate': inflation_rate
+        }
+            
+    # --- RESULTS DISPLAY ---
+    if 'fire_results' in st.session_state:
+        results = st.session_state['fire_results']
         
-        # --- RESULTS ---
+        ages = results['ages']
+        balances = results['balances']
+        needs = results['needs']
+        # Recalculate inflation rate based on current slider (dynamic) or stored?
+        # Better to use current slider so it responds to changes if we want, but technically simulation was run with specific parameters.
+        # Let's use the stored inflation rate for consistency with the generated numbers.
+        sim_inflation_rate = results['inflation_rate']
+        
         st.divider()
         st.markdown("## 📊 Simulation Results")
         
+        # Inflation Toggle
+        col_res_header, col_toggle = st.columns([3, 1])
+        with col_res_header:
+             st.write("Visualizing your path to financial independence.")
+        with col_toggle:
+             show_real = st.toggle("Show in Today's Dollars", value=False, help="Adjusts future values for inflation to show purchasing power.")
+
+        # Adjustment Logic
+        display_balances = []
+        display_needs = []
+        
+        for i, (bal, need) in enumerate(zip(balances, needs)):
+            if show_real:
+                factor = (1 + sim_inflation_rate) ** i
+                display_balances.append(bal / factor)
+                display_needs.append(need / factor)
+            else:
+                display_balances.append(bal)
+                display_needs.append(need)
+
+        final_bridge_balance = display_balances[len(ages)-5] # Roughly age 60 point based on logic?
+        # Actually logic captures up to Age 60 + 5 years.
+        # Let's find index where phase changes or just use depletion logic.
+        
         r1, r2, r3 = st.columns(3)
         
-        r1.metric("Projected Wealth at FIRE", f"${fire_starting_balance:,.0f}")
+        # Start Value
+        fire_start_idx = results['years_to_fire']
+        fire_val = display_balances[fire_start_idx] if fire_start_idx < len(display_balances) else 0
         
-        bridge_cost_nominal = sum(needs) # Rough sum of nominal dollars spent
-        # Better metric: Did we make it?
+        r1.metric("Projected Wealth at FIRE", f"${fire_val:,.0f}")
         
-        if success:
+        if results['success']:
             r2.success("✅ **Bridge Successful**")
-            r3.metric("Surplus at Age 60", f"${balances[len(ages)-5]:,.0f}", help="Remaining outside-super wealth to add to your Super")
+            # Surplus at 60 is roughly the balance before post-super phase
+            surplus_idx = results['years_to_fire'] + results['years_in_bridge']
+            surplus_val = display_balances[surplus_idx] if surplus_idx < len(display_balances) else 0
+            
+            r3.metric("Surplus at Age 60", f"${surplus_val:,.0f}", help="Remaining outside-super wealth to add to your Super")
         else:
-            r2.error(f"❌ **Funds Depleted at Age {depletion_age}**")
-            r3.metric("Shortfall Age", f"{depletion_age}")
+            r2.error(f"❌ **Funds Depleted at Age {results['depletion_age']}**")
+            r3.metric("Shortfall Age", f"{results['depletion_age']}")
             
         # Chart
         fig = go.Figure()
         
         # Wealth Line
         fig.add_trace(go.Scatter(
-            x=ages, y=balances,
+            x=ages, y=display_balances,
             name="Investable Assets",
             mode='lines',
             fill='tozeroy',
             line=dict(color='#C5A059', width=3)
         ))
-        
-        # Critical Zone (Bridge Phase)
-        # Highlight the years where Age >= fire_age and Age < 60
-        # We can add a shape
+         
+        # Target Line (Spend)
+        # Note: In accumulation, 'needs' is 0, so line drops. 
+        # Better to show Target Spend level across whole chart?
+        # Or just during drawdown.
+        # Existing logic had needs=0 in accumulation.
+        fig.add_trace(go.Scatter(
+            x=ages, 
+            y=display_needs,
+            name="Annual Spend Requirement",
+            mode='lines',
+            line=dict(color='#FF5252', dash='dash')
+        ))
         
         fig.update_layout(
             title="FIRE Bridge Trajectory",
             xaxis_title="Age",
-            yaxis_title="Wealth ($)",
+            yaxis_title=f"Wealth ({'Real' if show_real else 'Nominal'} $)",
             height=400,
             hovermode="x unified"
         )
         
-        # Add 'Bridge Phase' shading
-        if years_in_bridge > 0:
+        st.plotly_chart(fig, use_container_width=True)
+         
+        # Add 'Bridge Phase' shading logic (handled by chart structure mostly)
             fig.add_vrect(
                 x0=fire_age, x1=60, 
                 annotation_text="Bridge Phase", annotation_position="top left",

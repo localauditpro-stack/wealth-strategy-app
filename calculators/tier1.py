@@ -55,11 +55,31 @@ def render_tier1():
             index=["Single", "Married/De facto", "Divorced", "Widowed"].index(profile.get('marital_status', "Married/De facto")),
             help="Your current relationship status"
         )
-        income = parse_currency_input(
-            "💵 Household Annual Income ($)", 
-            profile.get('income', 120000), 
-            "Combined pre-tax income for your household"
-        )
+        # Income Logic
+        if marital_status == "Married/De facto":
+            col_inc_a, col_inc_b = st.columns(2)
+            with col_inc_a:
+                user_income = parse_currency_input(
+                    "Your Income ($)", 
+                    profile.get('user_income', 90000), 
+                    "Your individual pre-tax income"
+                )
+            with col_inc_b:
+                partner_income = parse_currency_input(
+                    "Partner Income ($)", 
+                    profile.get('partner_income', 60000), 
+                    "Partner's individual pre-tax income"
+                )
+            income = user_income + partner_income
+            st.caption(f"**Total Household Income:** ${income:,.0f}")
+        else:
+            user_income = parse_currency_input(
+                "Annual Income ($)", 
+                profile.get('user_income', profile.get('income', 120000)), 
+                "Your pre-tax income"
+            )
+            partner_income = 0
+            income = user_income
         state = st.selectbox(
             "📍 State",
             ["NSW", "VIC", "QLD", "WA", "SA"],
@@ -127,6 +147,8 @@ def render_tier1():
             "age": age,
             "marital_status": marital_status,
             "income": income,
+            "user_income": user_income,
+            "partner_income": partner_income,
             "dependants": dependants,
             "home_value": home_value,
             "mortgage": mortgage,
@@ -140,6 +162,8 @@ def render_tier1():
             'scores': scores,
             'equity': equity,
             'income': income,
+            'user_income': user_income,
+            'partner_income': partner_income,
             'experience': experience,
             'risk_tolerance': risk_tolerance,
             'age': age,
