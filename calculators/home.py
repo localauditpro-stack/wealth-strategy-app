@@ -30,16 +30,19 @@ def render_home():
 
     # Phase 1: Foundation
     st.markdown("### Phase 1: Foundation")
-    col1, col2 = st.columns([1, 2])
-    with col1:
-        st.info("**1. Clarity**\n\n*(The Assessment)*")
-    with col2:
-        st.write("""
-        **Why it matters:** You can't build a skyscraper on quicksand. Before engaging complex tax structures or debt recycling, you must quantify your **Readiness Score**. 
-        Do you have the surplus income, equity buffer, and risk tolerance to support leverage?
-        """)
-        if st.button("Start Assessment (Tier 1) 👉", key="btn_p1", type="primary"):
-            go_to_page("Tier 1: Clarity (Readiness)")
+    
+    # Full-width card for Phase 1
+    with st.container(border=True):
+        c1, c2 = st.columns([1, 3])
+        with c1:
+            st.markdown("### 1. Clarity")
+            st.caption("The Assessment")
+            st.info("**Start Here**")
+        with c2:
+            st.markdown("**Why it matters:** You can't build a skyscraper on quicksand. Before engaging complex tax structures or debt recycling, you must quantify your **Readiness Score**.")
+            st.write("Do you have the surplus income, equity buffer, and risk tolerance to support leverage?")
+            if st.button("Start Assessment (Tier 1) 👉", key="btn_p1", type="primary"):
+                go_to_page("Tier 1: Clarity (Readiness)")
 
     st.markdown("---")
 
@@ -54,7 +57,7 @@ def render_home():
             st.markdown("""
             **The Dilemma:** Should I buy an investment property or a share portfolio?
             
-            **The Solution:** A mathematical comparison of **Debt Recycling** (converting home debt to deductible debt) vs. **Leveraged Property**.
+            **The Solution:** A mathematical comparison of **Debt Recycling** vs. **Leveraged Property**.
             
             **Key Metric:** 10-Year Net Wealth Gap.
             """)
@@ -68,7 +71,7 @@ def render_home():
             st.markdown("""
             **The Dilemma:** Super feels locked away, so I ignore it.
             
-            **The Reality:** It is your most powerful tax shelter. A 1% difference in fees or returns can cost you **over \$200,000** in final balance.
+            **The Reality:** It is your most powerful tax shelter. Small changes now compound massively.
             
             **Key Metric:** The Cost of Waiting.
             """)
@@ -87,7 +90,7 @@ def render_home():
             st.markdown("""
             **The Goal:** Work becomes optional.
             
-            **The Mechanism:** Calculating your "FI Number" and building a specific **"Bridge"** of accessible assets to get you from age 50 to Super preservation age (60).
+            **The Mechanism:** Calculating your "FI Number" and building a specific **"Bridge"**.
             """)
             st.button("Plan Freedom (Tier 4) 👉", key="btn_p4", on_click=lambda: go_to_page("Tier 4: Freedom (FIRE)"))
 
@@ -96,7 +99,7 @@ def render_home():
             st.markdown("#### 5. Protection (Legacy)")
             st.caption("The Fortress")
             st.markdown("""
-            **The Risk:** The default "Leave it to the kids" strategy often donates **17%** of your Super to the ATO in "Death Benefits Tax".
+            **The Risk:** "Death Benefits Tax" can take **17%** of your Super.
             
             **The Fix:** Recontribution strategies and testamentary trusts.
             """)
@@ -105,7 +108,7 @@ def render_home():
     st.divider()
     
     # Educational Section: The 3 Enemies
-    st.markdown("### �️ The 3 Enemies of Wealth")
+    st.markdown("### ⚔️ The 3 Enemies of Wealth")
     st.write("Even high earners fail because they ignore these three silent killers.")
     
     e1, e2, e3 = st.columns(3)
@@ -114,19 +117,19 @@ def render_home():
          st.markdown("""
          Earning **\$180,000+**? You are losing nearly half your extra effort to tax. 
          
-         *The Fix:* Structural changes (Debt Recycling, Super, Trusts) convert personal non-deductible debt into tax-deductible debt.
+         *The Fix:* Structural changes convert personal debt into tax-deductible debt.
          """)
     with e2:
          st.warning("**2. Inflation (The Thief)**")
          st.markdown("""
-         Leaving **\$100,000** in cash feels safe, but at 3% inflation, its purchasing power halves in 24 years.
+         Leaving **\$100,000** in cash feels safe, but at 3% inflation, its purchasing power halves.
          
          *The Fix:* Assets must work harder than inflation. Lazy equity is a wasted resource.
          """)
     with e3:
          st.info("**3. Procrastination**")
          st.markdown("""
-         The "Cost of Waiting" is exponential. Delaying investment by just 5 years can reduce your retirement nest egg by **over \$500,000**.
+         The "Cost of Waiting" is exponential. Delaying investment by 5 years costs **over \$500,000**.
          
          *The Fix:* Start structurally, even if you start small.
          """)
@@ -140,10 +143,10 @@ def render_home():
         
         *   **Homeowners** with some equity (approx. \$200k+) looking to "recycle" it.
         *   **High Income Households** (\$180k+ combined) seeking tax efficiency.
-        *   **Aspirational Builders** who want data-driven validation, not sales pitches.
+        *   **Aspirational Builders** who want data-driven validation.
         
-        *If you are just starting out with no equity and lower income, Tier 1 (Readiness) will give you a clear roadmap of what to build first.*
+        *If you are just starting out, Tier 1 (Readiness) will give you a clear roadmap.*
         """)
 
     st.markdown("---")
-    st.caption("Select a pillar above or use the sidebar navigation to begin your assessment.")
+    st.caption("Select a **Tier** above or use the sidebar navigation to begin your assessment.")
