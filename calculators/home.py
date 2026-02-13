@@ -57,7 +57,7 @@ def render_home():
             st.markdown("""
             **The Dilemma:** Should I buy an investment property or a share portfolio?
             
-            **The Solution:** A mathematical comparison of **Debt Recycling** vs. **Leveraged Property**.
+            **The Solution:** Compare the long-term outcomes of **Debt Recycling** vs. **Leveraged Property**.
             
             **Key Metric:** 10-Year Net Wealth Gap.
             """)
@@ -69,7 +69,7 @@ def render_home():
             st.markdown("#### 3. Acceleration (Super)")
             st.caption("The Engine")
             st.markdown("""
-            **The Dilemma:** Super feels locked away, so I ignore it.
+            **The Dilemma:** Super feels locked away, so I usually ignore it.
             
             **The Reality:** It is your most powerful tax shelter. Small changes now compound massively.
             
@@ -90,7 +90,9 @@ def render_home():
             st.markdown("""
             **The Goal:** Work becomes optional.
             
-            **The Mechanism:** Calculating your "FI Number" and building a specific **"Bridge"**.
+            **The Mechanism:** Calculate your "FI Number" and build a **"Bridge"** to get you there.
+            
+            **Key Metric:** Years to Financial Freedom.
             """)
             st.button("Plan Freedom (Tier 4) 👉", key="btn_p4", on_click=lambda: go_to_page("Tier 4: Freedom (FIRE)"))
 
@@ -99,9 +101,11 @@ def render_home():
             st.markdown("#### 5. Protection (Legacy)")
             st.caption("The Fortress")
             st.markdown("""
-            **The Risk:** "Death Benefits Tax" can take **17%** of your Super.
+            **The Risk:** "Death Benefits Tax" can take **17%** of your Super to the ATO.
             
-            **The Fix:** Recontribution strategies and testamentary trusts.
+            **The Fix:** Recontribution strategies and testamentary trusts to protect it.
+            
+            **Key Metric:** Projected Tax Saving.
             """)
             st.button("Protect Legacy (Tier 5) 👉", key="btn_p5", on_click=lambda: go_to_page("Tier 5: Protection (Legacy)"))
                 
