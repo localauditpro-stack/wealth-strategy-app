@@ -46,6 +46,27 @@ def render_home():
 
     st.markdown("---")
 
+    # Custom CSS for card alignment
+    st.markdown("""
+        <style>
+        .card-content {
+            min-height: 240px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .metric-highlight {
+            background-color: #f0f2f6;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-weight: 600;
+            text-align: center;
+            color: #1A2B3C;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     # Phase 2: Growth & Acceleration
     st.markdown("### Phase 2: Growth & Acceleration")
     c_g1, c_g2 = st.columns(2)
@@ -55,12 +76,16 @@ def render_home():
             st.markdown("#### 2. Direction (Strategy)")
             st.caption("The Vehicle")
             st.markdown("""
-            **The Dilemma:** Should I buy an investment property or a share portfolio?
-            
-            **The Solution:** Compare the long-term outcomes of **Debt Recycling** vs. **Leveraged Property**.
-            
-            **Key Metric:** 10-Year Net Wealth Gap.
-            """)
+            <div class="card-content">
+                <div>
+                    <p><b>🕵️ The Dilemma:</b><br>Should I buy an investment property or a share portfolio?</p>
+                    <p><b>✨ The Solution:</b><br>Compare the long-term outcomes of <b>Debt Recycling</b> vs. <b>Leveraged Property</b>.</p>
+                </div>
+                <div class="metric-highlight">
+                    🎯 Key Metric: 10-Year Net Wealth Gap
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
             if st.button("Compare Strategies (Tier 2) 👉", key="btn_p2"):
                 go_to_page("Tier 2: Direction (Strategy)")
 
@@ -69,12 +94,16 @@ def render_home():
             st.markdown("#### 3. Acceleration (Super)")
             st.caption("The Engine")
             st.markdown("""
-            **The Dilemma:** Super feels locked away, so I usually ignore it.
-            
-            **The Reality:** It is your most powerful tax shelter. Small changes now compound massively.
-            
-            **Key Metric:** The Cost of Waiting.
-            """)
+            <div class="card-content">
+                <div>
+                    <p><b>🔒 The Dilemma:</b><br>Super feels locked away, so I usually ignore it.</p>
+                    <p><b>🚀 The Reality:</b><br>It is your most powerful tax shelter. Small changes now compound massively.</p>
+                </div>
+                <div class="metric-highlight">
+                    ⏳ Key Metric: The Cost of Waiting
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
             st.button("Optimise Super (Tier 3) 👉", key="btn_p3", on_click=lambda: go_to_page("Tier 3: Acceleration (Super)"))
 
     st.markdown("---")
@@ -88,12 +117,16 @@ def render_home():
             st.markdown("#### 4. Freedom (FIRE)")
             st.caption("The Destination")
             st.markdown("""
-            **The Goal:** Work becomes optional.
-            
-            **The Mechanism:** Calculate your "FI Number" and build a **"Bridge"** to get you there.
-            
-            **Key Metric:** Years to Financial Freedom.
-            """)
+            <div class="card-content">
+                <div>
+                    <p><b>🏖️ The Goal:</b><br>Work becomes optional.</p>
+                    <p><b>🌉 The Mechanism:</b><br>Calculate your "FI Number" and build a <b>"Bridge"</b> to get you there.</p>
+                </div>
+                <div class="metric-highlight">
+                    🔥 Key Metric: Years to Financial Freedom
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
             st.button("Plan Freedom (Tier 4) 👉", key="btn_p4", on_click=lambda: go_to_page("Tier 4: Freedom (FIRE)"))
 
     with c_f2:
@@ -101,12 +134,16 @@ def render_home():
             st.markdown("#### 5. Protection (Legacy)")
             st.caption("The Fortress")
             st.markdown("""
-            **The Risk:** "Death Benefits Tax" can take **17%** of your Super to the ATO.
-            
-            **The Fix:** Recontribution strategies and testamentary trusts to protect it.
-            
-            **Key Metric:** Projected Tax Saving.
-            """)
+            <div class="card-content">
+                <div>
+                    <p><b>⚠️ The Risk:</b><br>"Death Benefits Tax" can take <b>17%</b> of your Super to the ATO.</p>
+                    <p><b>🛡️ The Fix:</b><br>Recontribution strategies and testamentary trusts to protect it.</p>
+                </div>
+                <div class="metric-highlight">
+                    💰 Key Metric: Projected Tax Saving
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
             st.button("Protect Legacy (Tier 5) 👉", key="btn_p5", on_click=lambda: go_to_page("Tier 5: Protection (Legacy)"))
                 
     st.divider()
