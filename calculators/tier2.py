@@ -90,6 +90,8 @@ def render_tier2():
             st.markdown("**Portfolio Assumptions (Diversified 70/30):**")
             dr_growth = st.slider("Expected Growth (%)", 4.0, 12.0, 8.5, 0.1, key="dr_growth", help="Source: ASX Long Term Investing Report (~8.5-9% 10y avg for Aus Shares).") / 100
             dr_yield = st.slider("Dividend Yield (%)", 1.0, 8.0, 2.5, 0.1, key="dr_yield", help="Source: RBA Bulletin. Typical yield ex-franking for Aus market.") / 100
+            
+            st.caption("ℹ️ **Franking Bias:** Assumes 30% allocation to Aussie companies paying fully franked dividends (30% tax credit).")
 
         # -- Strategy B: Property --
         with col_strat2:
@@ -389,7 +391,7 @@ def render_tier2():
         
 import numpy_financial as npf
 
-def calculate_dr_projection(amount, growth, yield_rate, interest_rate, tax_rate, loan_type="Interest Only", loan_term=30, years=10):
+def calculate_dr_projection(amount, growth, yield_rate, interest_rate, tax_rate, loan_type="Interest Only", loan_term=30, years=10, franking_allocation=0.30, company_tax_rate=0.30):
     net_wealth = []
     tax_saved_cum = []
     tax_saved_yearly = []
@@ -425,18 +427,38 @@ def calculate_dr_projection(amount, growth, yield_rate, interest_rate, tax_rate,
                 interest = 0 # simplified end of loan
             
         # Cashflow
-        income = current_val * yield_rate
-        net_cash = income - interest
+        cash_dividends = current_val * yield_rate
         
-        # Tax Impact (check if strategy is negatively geared)
-        if net_cash < 0:
-            tax_saving = abs(net_cash) * tax_rate
-            total_tax_saved += tax_saving
-            current_tax_saving = tax_saving
-        else:
-            current_tax_saving = -(net_cash * tax_rate)
-            total_tax_saved += current_tax_saving
-            
+        # Franking Credit Logic
+        # Apply allocation (e.g. 30% of portfolio is Aussie shares paying fully franked dividends)
+        franked_portion = cash_dividends * franking_allocation
+        unfranked_portion = cash_dividends * (1 - franking_allocation)
+        
+        # Gross up limits
+        franking_credits = (franked_portion / (1 - company_tax_rate)) * company_tax_rate
+        gross_income = cash_dividends + franking_credits
+        
+        # Taxable Income = Gross Income - Deductions (Interest)
+        taxable_income = gross_income - interest
+        
+        # Tax Liability (Negative means tax loss/refund)
+        tax_liability = taxable_income * tax_rate
+        
+        # Net Tax Position = Tax Liability - Franking Credits (Offsets)
+        # If Liability is negative (Refund), we add credits to refund (credits are refundable)
+        # If Liability is positive (Payable), credits reduce it.
+        # Actually: Tax Payable = (Taxable Income * Rate) - Offsets
+        # If Result < 0, it's a refund.
+        
+        net_tax_payable = tax_liability - franking_credits
+        
+        # We display "Tax Saved" (Benefit). 
+        # If net_tax_payable is negative (Refund), Benefit is positive.
+        # If net_tax_payable is positive (Payable), Benefit is negative.
+        current_tax_saving = -net_tax_payable
+        
+        total_tax_saved += current_tax_saving
+
         tax_saved_cum.append(total_tax_saved)
         tax_saved_yearly.append(current_tax_saving)
         
