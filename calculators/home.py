@@ -166,7 +166,7 @@ def render_home():
     with e2:
          st.warning("**2. Inflation (The Thief)**")
          st.markdown("""
-         Leaving **\$100,000** in cash feels safe, but at 3% p.a. inflation, its purchasing power halves in approx 24 years.
+          Leaving **\$100,000** in cash feels safe, but at 3% p.a. inflation, its purchasing power halves in approx 24 years. 
          
          *The Fix:* Assets must work harder than inflation. Lazy equity is a wasted resource.
          """)
