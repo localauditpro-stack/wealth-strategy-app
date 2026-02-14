@@ -195,26 +195,12 @@ def main():
                 st.error(f"Result: {message}")
                 
             # Email Capture
-            with st.form("tier1_capture"):
-                email = st.text_input("Enter your email to get the full analysis:")
-                submit_capture = st.form_submit_button("Get Analysis")
-                
-                if submit_capture and email:
-                    # Mock database save
-                    st.session_state['lead_data'] = {
-                        "email": email,
-                        "score": score,
-                        "tier": tier,
-                        "data": data
-                    }
-                    st.success(f"Thank you! Your analysis has been sent to {email}.")
-                    st.balloons()
-            
-            # Next Button logic (independent of form)
-            st.write("")
-            st.markdown("### Ready for the next step?")
-            if st.button("Proceed to Strategy Comparison 👉", type="primary"):
-                 go_to_page("Tier 2: Direction (Strategy)")
+            # Conditional Next Step
+            if status == "ready":
+                st.write("")
+                st.markdown("### Ready for the next step?")
+                if st.button("Proceed to Strategy Comparison 👉", type="primary"):
+                     go_to_page("Tier 2: Direction (Strategy)")
                  
     elif selection == "Tier 2: Direction (Strategy)":
         render_tier2()

@@ -235,10 +235,7 @@ def render_tier1():
         st.markdown("### 💡 Strategies to Explore")
         show_recommendations(total_score, assessment)
         
-        # Next Steps
-        st.markdown("### 🎯 Your Next Steps")
-        show_next_steps(assessment)
-        
+    
         render_footer_disclaimer()
         
         return {
@@ -460,53 +457,7 @@ def show_recommendations(score, assessment):
     st.caption("⚠️ *Disclaimer: This tool provides general information and projections for educational purposes only. It does not constitute personal financial advice and has not considered your personal circumstances.*")
 
 
-def show_next_steps(assessment):
-    """Show clear next steps based on assessment."""
-    
-    if assessment == "Ready":
-        col1, col2 = st.columns(2)
-        with col1:
-            # Lead Capture (Partial Results Strategy)
-            if 'lead_data' not in st.session_state or not st.session_state.lead_data.get('email'):
-                st.info("👇 **Unlock Your Detailed Report and Action Plan**")
-                if render_lead_capture_form("tier1", button_label="Get Full Analysis"):
-                    st.rerun()
-            else:
-                # Show full analysis if unlocked
-                st.success(f"Full analysis unlocked for {st.session_state.lead_data.get('email')}")
-                # Mock email send verification
-                
-                # Next Button logic (only show if unlocked or maybe always?)
-                st.write("")
-                st.markdown("### ⚖️ Compare Your Options")
-                st.write("See the mathematics: **Investment Property** vs **Debt Funded Portfolio**.")
-                if st.button("🚀 Run Comparison Model", type="primary"):
-                     go_to_page("Tier 2: Portfolio vs Property")
-    
-    elif assessment == "Building":
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown("""
-            **⚡ Next Calculator:**
-            - [Tier 3: Super Power](#tier-3-super-power)
-            - See the impact of High Growth super
-            """)
-        with col2:
-            st.markdown("""
-            **📚 Resources:**
-            - Download: Equity Building Guide
-            - Read: Super Optimization Tips
-            """)
-    
-    else:
-        st.markdown("""
-        **📚 Recommended Resources:**
-        - Download: Wealth Building Foundations Guide
-        - Read: Debt Reduction Strategies
-        - Watch: Financial Basics Webinar
-        """)
 
-    render_footer_disclaimer()
 
 
 def analyze_tier1(data):
