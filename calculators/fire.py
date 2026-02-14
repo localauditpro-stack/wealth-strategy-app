@@ -29,7 +29,7 @@ def render_fire_calculator():
         
     with col2:
         st.subheader("💰 The Gap")
-        annual_spend = parse_currency_input("Desired Annual Spend ($/yr)", 80000, help_text="In today's dollars")
+        annual_spend = parse_currency_input("Desired Annual Spend ($/yr)", 80000, help_text="In today's dollars", key="fire_spend")
         access_age = 60 # Super preservation age
         
     st.divider()
@@ -37,8 +37,8 @@ def render_fire_calculator():
     col3, col4 = st.columns(2)
     with col3:
         st.subheader("🏦 Assets (Outside Super)")
-        current_investable = parse_currency_input("Current Investable Assets ($)", 100000)
-        monthly_savings = parse_currency_input("Monthly Savings Contribution ($)", 2000)
+        current_investable = parse_currency_input("Current Investable Assets ($)", 100000, key="fire_investable")
+        monthly_savings = parse_currency_input("Monthly Savings Contribution ($)", 2000, key="fire_savings")
         
     with col4:
         st.subheader("📈 Assumptions")
@@ -257,14 +257,12 @@ def render_fire_calculator():
             hovermode="x unified"
         )
         
-        st.plotly_chart(fig, use_container_width=True)
-         
-        # Add 'Bridge Phase' shading logic (handled by chart structure mostly)
-            fig.add_vrect(
-                x0=fire_age, x1=60, 
-                annotation_text="Bridge Phase", annotation_position="top left",
-                fillcolor="#1A2B3C", opacity=0.1, line_width=0
-            )
+        # Add 'Bridge Phase' shading logic
+        fig.add_vrect(
+            x0=fire_age, x1=60, 
+            annotation_text="Bridge Phase", annotation_position="top left",
+            fillcolor="#1A2B3C", opacity=0.1, line_width=0
+        )
 
         st.plotly_chart(fig, use_container_width=True)
         st.caption(get_projection_disclaimer())

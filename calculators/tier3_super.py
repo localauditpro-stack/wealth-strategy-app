@@ -112,7 +112,7 @@ def render_tier3_super():
         
         unused_cap = 0
         if use_catchup:
-            unused_cap = parse_currency_input("Unused Concessional Cap Amount ($)", 30000, help_text="Check your ATO Portal (via myGov) for this figure")
+            unused_cap = parse_currency_input("Unused Concessional Cap Amount ($)", 30000, help_text="Check your ATO Portal (via myGov) for this figure", key="t3_unused_cap")
             st.caption(f"ℹ️ Boosting Year 1 contribution by **${unused_cap:,.0f}**")
     
     # Calculate button

@@ -38,12 +38,14 @@ def render_tier1():
         home_value = parse_currency_input(
             "🏠 Home Value ($)", 
             profile.get('home_value', 1000000), 
-            "Current market value of your home"
+            "Current market value of your home",
+            key="t1_home_value"
         )
         mortgage = parse_currency_input(
             "🏦 Mortgage Balance ($)", 
             profile.get('mortgage', 600000), 
-            "Remaining loan on your home"
+            "Remaining loan on your home",
+            key="t1_mortgage"
         )
         
         equity = home_value - mortgage
@@ -62,13 +64,15 @@ def render_tier1():
                 user_income = parse_currency_input(
                     "Your Income ($)", 
                     profile.get('user_income', 90000), 
-                    "Your individual pre-tax income"
+                    "Your individual pre-tax income",
+                    key="t1_user_income_sp"
                 )
             with col_inc_b:
                 partner_income = parse_currency_input(
                     "Partner Income ($)", 
                     profile.get('partner_income', 60000), 
-                    "Partner's individual pre-tax income"
+                    "Partner's individual pre-tax income",
+                    key="t1_partner_income"
                 )
             income = user_income + partner_income
             st.caption(f"**Total Household Income:** ${income:,.0f}")
@@ -76,7 +80,8 @@ def render_tier1():
             user_income = parse_currency_input(
                 "Annual Income ($)", 
                 profile.get('user_income', profile.get('income', 120000)), 
-                "Your pre-tax income"
+                "Your pre-tax income",
+                key="t1_user_income"
             )
             partner_income = 0
             income = user_income
@@ -413,13 +418,21 @@ def show_recommendations(score, assessment):
     
     if assessment == "Ready":
         st.success("""
-        **✅ Options to Explore:**
-        - **Debt Recycling**: Model how converting non-deductible debt to tax-deductible investment debt could impact your tax.
-        - **Investment Property**: Assess the potential of using equity for property investment.
-        - **Super Strategies**: Review how different allocations (e.g., High Growth) might affect your long-term balance.
-        - **Portfolio Diversification**: Understand the potential role of a diversified investment portfolio.
+        **✅ Your Next Strategic Move:**
         
-        **💡 Suggested Next Step**: Use the Tier 2 calculator to compare Portfolio vs Property scenarios.
+        You have the foundation to accelerate wealth creation. The key comparison for you is typically **Investment Property vs. Debt Funded Investment Portfolio**.
+        
+        **1. Investment Property**
+        *   Traditional route with high leverage.
+        *   High entry costs (Stamp Duty, LMI).
+        *   Often negatively geared for long periods.
+
+        **2. Debt Funded Investment Portfolio (Recommended for Flexibility)**
+        *   **Tax Effective**: Convert non-deductible debt into tax-deductible investment debt (Debt Recycling).
+        *   **Flexible**: Start small, dollar-cost average, and access funds if needed (liquidity).
+        *   **Efficient**: No Stamp Duty means 100% of your capital works for you immediately.
+        
+        **💡 Recommendation:** Explore the **Debt Funded Portfolio** model to see how flexibility and tax benefits compare.
         """)
     
     elif assessment == "Building":
@@ -465,8 +478,9 @@ def show_next_steps(assessment):
                 
                 # Next Button logic (only show if unlocked or maybe always?)
                 st.write("")
-                st.markdown("### Ready for the next step?")
-                if st.button("Proceed to Strategy Comparison 👉", type="primary"):
+                st.markdown("### ⚖️ Compare Your Options")
+                st.write("See the mathematics: **Investment Property** vs **Debt Funded Portfolio**.")
+                if st.button("🚀 Run Comparison Model", type="primary"):
                      go_to_page("Tier 2: Portfolio vs Property")
     
     elif assessment == "Building":

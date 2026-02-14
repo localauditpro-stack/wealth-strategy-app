@@ -33,8 +33,8 @@ def render_tier2():
             age = st.number_input("Age", value=profile.get('age', 35), step=1)
             state = st.selectbox("State (Properties)", ["NSW", "VIC", "QLD", "WA", "SA"], index=["NSW", "VIC", "QLD", "WA", "SA"].index(profile.get('state', "NSW")))
         with col_p2:
-            income_user = parse_currency_input("Your Annual Income ($)", profile.get('income', 120000))
-            partner_income = parse_currency_input("Partner Income ($)", profile.get('partner_income', 0), help_text="Leave 0 if single")
+            income_user = parse_currency_input("Your Annual Income ($)", profile.get('income', 120000), key="t2_income")
+            partner_income = parse_currency_input("Partner Income ($)", profile.get('partner_income', 0), help_text="Leave 0 if single", key="t2_partner_income")
         with col_p3:
             dependants = st.number_input("Dependents", value=profile.get('dependants', 0), step=1)
             
@@ -46,9 +46,9 @@ def render_tier2():
         st.markdown("#### 2. Your Home (The Engine)")
         col_h1, col_h2, col_h3 = st.columns(3)
         with col_h1:
-            home_value = parse_currency_input("Current Home Value ($)", profile.get('home_value', 1000000))
+            home_value = parse_currency_input("Current Home Value ($)", profile.get('home_value', 1000000), key="t2_home_value")
         with col_h2:
-            home_loan = parse_currency_input("Current Home Loan ($)", profile.get('mortgage', 600000))
+            home_loan = parse_currency_input("Current Home Loan ($)", profile.get('mortgage', 600000), key="t2_home_loan")
         with col_h3:
             loan_rate = st.number_input("Mortgage Rate (%)", value=6.10, step=0.05) / 100
             
@@ -85,7 +85,7 @@ def render_tier2():
         with col_strat1:
             st.info("📊 **Strategy A: Debt-Funded Share Portfolio**")
             # Default to same as property for like-for-like comparison
-            dr_amount = parse_currency_input("Investment Amount ($)", DEFAULT_ASSET_VALUE, help_text="Defaults to match property value for fair comparison")
+            dr_amount = parse_currency_input("Investment Amount ($)", DEFAULT_ASSET_VALUE, help_text="Defaults to match property value for fair comparison", key="t2_dr_amount")
             
             st.markdown("**Portfolio Assumptions (Diversified 70/30):**")
             dr_growth = st.slider("Expected Growth (%)", 4.0, 12.0, 8.5, 0.1, key="dr_growth", help="Source: ASX Long Term Investing Report (~8.5-9% 10y avg for Aus Shares).") / 100
@@ -100,7 +100,7 @@ def render_tier2():
             st.warning(f"🏠 **Strategy B: Investment Property ({current_state})**")
             
             ip_state = st.selectbox("Investment Property State", list(PROPERTY_MARKET_DATA.keys()), index=0, key="tier2_ip_state")
-            ip_price = parse_currency_input("Purchase Price ($)", DEFAULT_ASSET_VALUE)
+            ip_price = parse_currency_input("Purchase Price ($)", DEFAULT_ASSET_VALUE, key="t2_ip_price")
             
             # Get specific defaults
             market_data = PROPERTY_MARKET_DATA[ip_state]
@@ -127,7 +127,7 @@ def render_tier2():
                 mgmt_rate = st.number_input("Mgmt Fee (% of Rent)", value=7.0, step=0.5, help="Typical agency management rate.") / 100
             with c_a2:
                 st.markdown("**Fixed Costs**")
-                rates = parse_currency_input("Rates & Insurance ($/yr)", 2500, help_text="Council rates, water, and building insurance.")
+                rates = parse_currency_input("Rates & Insurance ($/yr)", 2500, help_text="Council rates, water, and building insurance.", key="t2_rates")
             with c_a3:
                 st.markdown("**Economic**")
                 inflation = st.number_input("Inflation Rate (%)", value=3.0, help="Source: RBA Inflation Target Band (2-3%).") / 100
