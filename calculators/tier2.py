@@ -172,8 +172,8 @@ def render_tier2():
         
         # Loan Calcs
         total_ip_loan = ip_price + stamp_duty + 2000 # 2k legal
-        lvr_ip = total_ip_loan / ip_price
-        lmi = calculate_lmi(total_ip_loan, ip_price) if lvr_ip > 0.8 else 0
+        lvr_ip = total_ip_loan / ip_price if ip_price > 0 else 0
+        lmi = calculate_lmi(total_ip_loan, ip_price) if(lvr_ip > 0.8 and ip_price > 0) else 0
         total_ip_cost = total_ip_loan + lmi
         
         # 3. Run Projections with P&I Logic
