@@ -181,26 +181,9 @@ def main():
         data = render_tier1()
         
         if data:
-            status, message = analyze_tier1(data)
+            # specific logic for lead scoring can remain, but UI is now in render_tier1
             score = calculate_lead_score(data, engagement_metrics={"calculator_complete": 1})
             tier = get_lead_tier(score)
-            
-            st.divider()
-            if status == "ready":
-                st.success(f"Result: {message}")
-                st.info("You appear ready for advanced strategies. Unlock the full report to see details.")
-            elif status == "maybe":
-                st.warning(f"Result: {message}")
-            else:
-                st.error(f"Result: {message}")
-                
-            # Email Capture
-            # Conditional Next Step
-            if status == "ready":
-                st.write("")
-                st.markdown("### Ready for the next step?")
-                if st.button("Proceed to Strategy Comparison 👉", type="primary"):
-                     go_to_page("Tier 2: Direction (Strategy)")
                  
     elif selection == "Tier 2: Direction (Strategy)":
         render_tier2()

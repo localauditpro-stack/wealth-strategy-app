@@ -235,6 +235,16 @@ def render_tier1():
         st.markdown("### 💡 Strategies to Explore")
         show_recommendations(total_score, assessment)
         
+        # Next Steps Navigation
+        if assessment == "Ready":
+            st.markdown("### Ready for the next step?")
+            if st.button("Proceed to Strategy Comparison 👉", type="primary"):
+                go_to_page("Tier 2: Direction (Strategy)")
+        elif assessment == "Building":
+             if st.button("Check Super Power 👉", type="secondary"):
+                go_to_page("Tier 3: Acceleration (Super)")
+
+        
     
         render_footer_disclaimer()
         
@@ -424,7 +434,7 @@ def show_recommendations(score, assessment):
         *   High entry costs (Stamp Duty, LMI).
         *   Often negatively geared for long periods.
 
-        **2. Debt Funded Investment Portfolio (Recommended for Flexibility)**
+        **2. Debt Funded Investment Portfolio**
         *   **Tax Effective**: Convert non-deductible debt into tax-deductible investment debt (Debt Recycling).
         *   **Flexible**: Start small, dollar-cost average, and access funds if needed (liquidity).
         *   **Efficient**: No Stamp Duty means 100% of your capital works for you immediately.
@@ -454,7 +464,7 @@ def show_recommendations(score, assessment):
         **💡 Suggested Next Step**: Review the effectiveness of savings and debt reduction strategies.
         """)
         
-    st.caption("⚠️ *Disclaimer: This tool provides general information and projections for educational purposes only. It does not constitute personal financial advice and has not considered your personal circumstances.*")
+
 
 
 
