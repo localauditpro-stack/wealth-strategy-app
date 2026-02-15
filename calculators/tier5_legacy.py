@@ -75,12 +75,36 @@ def render_tier5_legacy():
     st.markdown("#### 💀 Illustrative Estate Tax Model")
     st.markdown(f"Illustrates the potential mathematical impact of taxes on non-dependants inheriting superannuation assets.")
     
-    # Calculation: CurrentSuper * Taxable% * 17% (15% tax + 2% Medicare)
-    estate_tax_liability = super_balance * taxable_portion * 0.17
+    # --- Calculate Projected Balance from Tier 3 ---
+    # Use the final projected balance from Tier 3 if available, otherwise use current balance
+    projected_balance = 0
+    use_tier3_projection = False
+    
+    if tier3_results and 'hg_projection' in tier3_results:
+         projected_balance = tier3_results['hg_projection']['balance'][-1]
+         use_tier3_projection = True
+    elif tier3_results and 'bal_projection' in tier3_results:
+         projected_balance = tier3_results['bal_projection']['balance'][-1]
+         use_tier3_projection = True
+    else:
+        # Simple Fallback: 7% return + $15k contrib until 65
+        years_to_65 = max(0, 65 - current_age)
+        if years_to_65 > 0:
+            r = 0.07
+            c = 15000 
+            projected_balance = super_balance * ((1 + r) ** years_to_65)
+            projected_balance += c * (((1 + r) ** years_to_65 - 1) / r)
+        else:
+            projected_balance = super_balance
+    
+    # Calculation: Projected Super Balance * Taxable% * 17% (15% tax + 2% Medicare)
+    estate_tax_liability = projected_balance * taxable_portion * 0.17
     
     # Scope Note
-    # Scope Note
-    st.caption("ℹ️ *Estate Tax Note: Estimates potential 'Death Benefits Tax' (Taxable Component x 15% + 2% Medicare Levy) applicable to non-dependant beneficiaries (e.g. adult children).*")
+    if use_tier3_projection:
+        st.caption("ℹ️ *Estate Tax Note: Estimates potential 'Death Benefits Tax' on your projected retirement super balance from Tier 3 (Taxable Component x 15% + 2% Medicare Levy) applicable to non-dependant beneficiaries (e.g. adult children).*")
+    else:
+        st.caption("ℹ️ *Estate Tax Note: Estimates potential 'Death Benefits Tax' (Taxable Component x 15% + 2% Medicare Levy) applicable to non-dependant beneficiaries (e.g. adult children). Run Tier 3 calculator for a more accurate projection.*")
 
     col_est_1, col_est_2 = st.columns([1, 2])
     
@@ -97,8 +121,8 @@ def render_tier5_legacy():
         fig_estate = go.Figure()
         fig_estate.add_trace(go.Bar(
             y=['Estate Value'],
-            x=[super_balance],
-            name='Total Super',
+            x=[projected_balance],
+            name='Total Super (Projected)',
             orientation='h',
             marker_color='#0F172A' # Deep Slate
         ))
@@ -112,7 +136,7 @@ def render_tier5_legacy():
         
         fig_estate.update_layout(
             barmode='overlay', 
-            title="Impact of Death Benefits Tax (Today)",
+            title=f"Impact of Death Benefits Tax ({'At Retirement' if use_tier3_projection else 'Projected'})",
             height=200,
             margin=dict(l=20, r=20, t=30, b=20),
             legend=dict(orientation="h", y=1.1)
@@ -120,26 +144,9 @@ def render_tier5_legacy():
         st.plotly_chart(fig_estate, use_container_width=True)
         render_chart_disclaimer()
 
-    # --- Future Projection (The "Wake Up Call") ---
-    
-    # Calculate Projected Balance (if not already simulated)
-    projected_balance = 0
-    if tier3_results and 'hg_projection' in tier3_results:
-         projected_balance = tier3_results['hg_projection']['balance'][-1]
-    elif tier3_results and 'bal_projection' in tier3_results:
-         projected_balance = tier3_results['bal_projection']['balance'][-1]
-    else:
-        # Simple Fallback: 7% return + $15k contrib until 65
-        years_to_65 = max(0, 65 - current_age)
-        if years_to_65 > 0:
-            r = 0.07
-            c = 15000 
-            projected_balance = super_balance * ((1 + r) ** years_to_65)
-            projected_balance += c * (((1 + r) ** years_to_65 - 1) / r)
-        else:
-            projected_balance = super_balance
+    # --- Future Projection Display ---
+    future_tax = estate_tax_liability
 
-    future_tax = projected_balance * taxable_portion * 0.17
     
     st.info(f"""
     🔮 **Illustrative Future Potential:** In a theoretical scenario where this balance grows to **\${projected_balance/1000000:.1f}M**, 
