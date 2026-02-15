@@ -8,20 +8,25 @@ from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
 def render_fire_calculator():
     """Renders the dedicated FIRE (Financial Independence, Retire Early) Calculator."""
     
-    st.markdown("### 🔥 Tier 4: Freedom (FIRE)")
+    st.title("Tier 4: Freedom (FIRE Concepts)")
+    
+    from utils.compliance import render_general_advice_warning_above_fold, render_data_usage_explanation, render_chart_disclaimer
+    render_general_advice_warning_above_fold()
+    render_data_usage_explanation()
+
     st.markdown("""
-    **"When can I stop?"**
+    **Understanding the 'FIRE Bridge' Concept**
     
-    **Financial Freedom** isn't just about saving—it's about building a bridge of capital to sustain you until you can access your Superannuation (Age 60).
+    The concept of Financial Independence, Retire Early (FIRE) often involves building a 'bridge' of capital to sustain lifestyle needs before reaching the superannuation preservation age (currently 60).
     
-    This calculator helps you determine if your **Outside-Super** assets can bridge the gap.
+    This simulation models how outside-super assets might behave in such a scenario based on simplified mathematical assumptions.
     """)
     
     # --- 1. Inputs ---
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("👤 You")
+        st.subheader("👤 Baseline Scenarios")
         # Get age from profile if available
         profile_age = st.session_state.get('user_profile', {}).get('age', 40)
         current_age = st.number_input("Current Age", 18, 65, profile_age, 1)
@@ -59,7 +64,7 @@ def render_fire_calculator():
     
     # Let's use Nominal Projection for the chart, but adjust the "Target Spend" by inflation.
     
-    if st.button("🚀 Run FIRE Simulation", type="primary", use_container_width=True):
+    if st.button("🚀 Run Illustrative Simulation", type="primary", use_container_width=True):
         
         # --- CALCULATION ENGINE ---
         
@@ -179,7 +184,8 @@ def render_fire_calculator():
         sim_inflation_rate = results['inflation_rate']
         
         st.divider()
-        st.markdown("## 📊 Simulation Results")
+        st.markdown("## 📊 Illustrative Simulation Results")
+        render_chart_disclaimer()
         
         # Inflation Toggle
         col_res_header, col_toggle = st.columns([3, 1])
@@ -214,14 +220,14 @@ def render_fire_calculator():
         r1.metric("Projected Wealth at FIRE", f"${fire_val:,.0f}")
         
         if results['success']:
-            r2.success("✅ **Bridge Successful**")
+            r2.success("✅ **Illustrative Model Holds**")
             # Surplus at 60 is roughly the balance before post-super phase
             surplus_idx = results['years_to_fire'] + results['years_in_bridge']
             surplus_val = display_balances[surplus_idx] if surplus_idx < len(display_balances) else 0
             
             r3.metric("Surplus at Age 60", f"${surplus_val:,.0f}", help="Remaining outside-super wealth to add to your Super")
         else:
-            r2.error(f"❌ **Funds Depleted at Age {results['depletion_age']}**")
+            r2.error(f"❌ **Illustrative Model Depletes at Age {results['depletion_age']}**")
             r3.metric("Shortfall Age", f"{results['depletion_age']}")
             
         # Chart
@@ -233,7 +239,7 @@ def render_fire_calculator():
             name="Investable Assets",
             mode='lines',
             fill='tozeroy',
-            line=dict(color='#C5A059', width=3)
+            line=dict(color='#6366F1', width=3)
         ))
          
         # Target Line (Spend)
@@ -261,7 +267,7 @@ def render_fire_calculator():
         fig.add_vrect(
             x0=fire_age, x1=60, 
             annotation_text="Bridge Phase", annotation_position="top left",
-            fillcolor="#1A2B3C", opacity=0.1, line_width=0
+            fillcolor="#6366F1", opacity=0.1, line_width=0
         )
 
         st.plotly_chart(fig, use_container_width=True)
@@ -270,19 +276,19 @@ def render_fire_calculator():
         # Analysis Text
         if not success:
             st.warning(f"""
-            ⚠️ **Bridge Gap Detected:** 
-            Your outside-super assets are projected to run out at **Age {depletion_age}**, {60 - depletion_age} years before you can access Super.
+            ⚠️ **Modeled Gap Detected:** 
+            In this specific mathematical model, the outside-super assets are projected to deplete at **Age {depletion_age}**.
             
-            **Sugestions:**
-            1.  Increase Monthly Savings
-            2.  Delay FIRE Age (reduce the bridge length)
-            3.  Reduce Target Spend
+            **Concepts often explored in these scenarios:**
+            1.  Potential impact of varying monthly saving levels.
+            2.  How changes to the target retirement age affect the model.
+            3.  Sensitivity of the model to different spending requirements.
             """)
         else:
             st.success(f"""
-            🎉 **You have a robust bridge!** 
-            Your strategy projects enough capital to sustain your lifestyle from Age {fire_age} to 60. 
-            At Age 60, you still have **${balances[len(ages)-5]:,.0f}** remaining to top up your Super.
+            🎉 **Illustrative Model Insights:** 
+            Based on the provided parameters, this model projects sufficient capital to sustain the modeled lifestyle from Age {fire_age} to 60. 
+            At Age 60, the model shows a potential surplus of **\${balances[len(ages)-5]:,.0f}**.
             """)
 
         # --- Shortfall / Gap Analysis (Required vs Projected) ---

@@ -52,28 +52,28 @@ def main():
 
         /* Main Headers */
         h1, h2, h3, h4, h5, h6 {
-            color: #1A2B3C !important; /* Apt Deep Navy */
+            color: #0F172A !important; /* Modern Deep Slate */
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
         }
         
         /* Metric Cards - Target the value and label */
         [data-testid="stMetricValue"] {
-            color: #C5A059 !important; /* Apt Gold */
+            color: #6366F1 !important; /* Modern Indigo */
             font-weight: 700;
         }
         [data-testid="stMetricLabel"] {
-            color: #1A2B3C !important;
+            color: #0F172A !important;
         }
         
         /* Sidebar Background */
         section[data-testid="stSidebar"] {
-            background-color: #F0F2F6;
-            border-right: 2px solid #C5A059;
+            background-color: #F8FAFC;
+            border-right: 2px solid #6366F1;
         }
         
         /* Primary Buttons */
         div.stButton > button {
-            background-color: #1A2B3C !important;
+            background-color: #6366F1 !important;
             color: white !important;
             border-radius: 8px;
             border: none;
@@ -81,20 +81,20 @@ def main():
             width: 100%; /* Full width on mobile */
         }
         div.stButton > button:hover {
-            background-color: #C5A059 !important;
+            background-color: #A855F7 !important;
             color: white !important;
-            border: 1px solid #1A2B3C;
+            border: 1px solid #6366F1;
         }
         
         /* Expander Headers */
         .streamlit-expanderHeader {
-            color: #1A2B3C !important;
+            color: #0F172A !important;
             font-weight: 600;
         }
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #1A2B3C 0%, #001A38 100%);
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
             padding: 4rem 2rem;
             border-radius: 12px;
             color: white;
@@ -103,13 +103,13 @@ def main():
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .hero h1 {
-            color: #C5A059 !important;
+            color: #6366F1 !important;
             font-size: 3.5rem;
             margin-bottom: 1rem;
         }
         .hero p {
             font-size: 1.2rem;
-            color: #E0E0E0;
+            color: #CBD5E1;
             max-width: 600px;
             margin: 0 auto 2rem auto;
         }
@@ -129,7 +129,7 @@ def main():
             "Tier 3: Acceleration (Super)",
             "Tier 4: Freedom (FIRE)",
             "Tier 5: Protection (Legacy)",
-            "Strategy Summary",
+            "Information Summary",
             "Cost of Waiting (Bonus)"
         ]
         
@@ -146,10 +146,10 @@ def main():
             menu_icon="cast", 
             default_index=default_index,
             styles={
-                "container": {"padding": "0!important", "background-color": "#fafafa"},
-                "icon": {"color": "#C5A059", "font-size": "16px"}, 
-                "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
-                "nav-link-selected": {"background-color": "#1A2B3C"},
+                "container": {"padding": "0!important", "background-color": "#f8fafc"},
+                "icon": {"color": "#A855F7", "font-size": "16px"}, 
+                "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#f1f5f9"},
+                "nav-link-selected": {"background-color": "#6366F1"},
             }
         )
         
@@ -215,11 +215,11 @@ def main():
         render_tier5_legacy()
         
         st.divider()
-        st.markdown("### 📋 Final Step: Your Strategy Snapshot")
-        if st.button("View Strategy Summary 👉", type="primary"):
-            go_to_page("Strategy Summary")
+        st.markdown("### 📋 Final Step: Your Information Summary")
+        if st.button("View Information Summary 👉", type="primary"):
+            go_to_page("Information Summary")
             
-    elif selection == "Strategy Summary":
+    elif selection == "Information Summary":
         from calculators.summary import render_summary_page
         render_summary_page()
         

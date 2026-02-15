@@ -6,14 +6,16 @@ from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
 def render_tier5_legacy():
     """Renders the Tier 5 'Legacy & Estate' Calculator."""
     
-    # --- 1. Header Compliance Warning ---
-    st.warning("⚠️ **Hypothetical Scenarios**: The following results are hypothetical scenarios based on the data provided and historical tax facts. They are not a recommendation to acquire or dispose of a financial product.")
-
-    st.markdown("### 🏛️ Tier 5: Protection (Legacy)")
-    st.markdown("""
-    **"Is it safe?"**
+    st.title("Tier 5: Protection (Legacy & Preservation Concepts)")
     
-    **Protect your legacy** with advanced preservation strategies including Estate Planning and Tax Optimization.
+    from utils.compliance import render_general_advice_warning_above_fold, render_data_usage_explanation, render_chart_disclaimer
+    render_general_advice_warning_above_fold()
+    render_data_usage_explanation()
+
+    st.markdown("""
+    **Understanding Asset Preservation**
+    
+    This tier explores fundamental concepts of long-term asset preservation, focusing on potential tax treatments for estates and illustrative redistribution strategies.
     """)
 
     # --- 2. Data Integration ---
@@ -40,7 +42,7 @@ def render_tier5_legacy():
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("👤 Your Profile")
+        st.subheader("👤 Baseline Scenario Profile")
         current_age = st.number_input("Current Age", value=age, min_value=18, max_value=90, step=1)
         hhi = parse_currency_input("Household Income ($)", income, key="t4_income")
         
@@ -70,8 +72,8 @@ def render_tier5_legacy():
     st.divider()
 
     # B. Estate Scorer (Death Benefits Tax)
-    st.markdown("#### 💀 Estate Tax Liability Scorer")
-    st.markdown(f"Estimate the potential tax bill for non-dependants (e.g., adult children) inheriting your Super.")
+    st.markdown("#### 💀 Illustrative Estate Tax Model")
+    st.markdown(f"Illustrates the potential mathematical impact of taxes on non-dependants inheriting superannuation assets.")
     
     # Calculation: CurrentSuper * Taxable% * 17% (15% tax + 2% Medicare)
     estate_tax_liability = super_balance * taxable_portion * 0.17
@@ -98,14 +100,14 @@ def render_tier5_legacy():
             x=[super_balance],
             name='Total Super',
             orientation='h',
-            marker_color='#1A2B3C' # Deep Navy
+            marker_color='#0F172A' # Deep Slate
         ))
         fig_estate.add_trace(go.Bar(
             y=['Estate Value'],
             x=[estate_tax_liability],
             name='Potential Tax',
             orientation='h',
-            marker_color='#C5A059' # Champagne Gold
+            marker_color='#6366F1' # Indigo
         ))
         
         fig_estate.update_layout(
@@ -116,7 +118,7 @@ def render_tier5_legacy():
             legend=dict(orientation="h", y=1.1)
         )
         st.plotly_chart(fig_estate, use_container_width=True)
-        st.caption(get_projection_disclaimer())
+        render_chart_disclaimer()
 
     # --- Future Projection (The "Wake Up Call") ---
     
@@ -140,17 +142,17 @@ def render_tier5_legacy():
     future_tax = projected_balance * taxable_portion * 0.17
     
     st.info(f"""
-    🔮 **Future Projection:** If your balance grows to **${projected_balance/1000000:.1f}M** by retirement, 
-    the potential tax bill for your beneficiaries swells to **${future_tax:,.0f}**.
+    🔮 **Illustrative Future Potential:** In a theoretical scenario where this balance grows to **\${projected_balance/1000000:.1f}M**, 
+    the potential tax impact for non-dependant beneficiaries models as **\${future_tax:,.0f}**.
     
-    *Legacy planning isn't just for today—it's about protecting your future wealth.*
+    *Preservation concepts focus on the long-term impact of tax treatments on wealth transfer.*
     """)
 
     st.divider()
 
     # C. Recontribution Strategy
-    st.markdown("#### 🔄 Recontribution Strategy")
-    st.markdown("Model the tax savings of a **'Wash Strategy'**: Withdrawing taxable super and re-contributing it as Non-Concessional (Tax-Free).")
+    st.markdown("#### 🔄 Recontribution Concept")
+    st.markdown("Explore the mathematical mechanics of a **'Wash Strategy'**: Modeling the potential impact of withdrawing taxable super and re-contributing it as Non-Concessional (Tax-Free).")
     
     wash_amount = 360000 # Max bring-forward cap
     # Can only wash up to the balance amount
@@ -171,9 +173,9 @@ def render_tier5_legacy():
         
     with col_re_2:
         st.metric(
-            label="Projected Tax Saved for Beneficiaries",
+            label="Illustrative Wealth Preservation Model",
             value=f"${tax_saved:,.0f}",
-            delta="Wealth Preserved",
+            delta="Potential Preserve",
             delta_color="normal" # Green/Positive
         )
 
@@ -196,9 +198,9 @@ def render_tier5_legacy():
         if is_whale:
             col_cta_1, col_cta_2 = st.columns([2, 1])
             with col_cta_1:
-                st.markdown("### 🌟 Specialized Strategy Required")
-                st.write("Your scenario involves complex tax and structure considerations. Move from a general model to a tailored plan.")
-                st.write("_Our partners provide formal Statements of Advice (SOA) that consider your personal objectives._")
+                st.markdown("### 🌟 Advanced Considerations")
+                st.write("Specialized scenarios often involve complex tax and structure considerations. Move from a general model to further exploration.")
+                st.write("_Licensed professionals can provide formal Statements of Advice (SOA) that consider your personal objectives._")
             with col_cta_2:
                 # Gold Button
                 st.markdown("""

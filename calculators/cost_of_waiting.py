@@ -7,16 +7,25 @@ from utils.compliance import render_footer_disclaimer
 
 def render_cost_of_waiting():
     """Renders the Cost of Waiting calculator."""
-    st.markdown("## 📉 The Cost of Waiting")
-    st.write("Understand the impact of delaying your investment journey.")
+    st.title("The Time Value of Money (Illustrative Delay Model)")
+    
+    from utils.compliance import render_general_advice_warning_above_fold, render_data_usage_explanation, render_chart_disclaimer
+    render_general_advice_warning_above_fold()
+    render_data_usage_explanation()
+
+    st.markdown("""
+    **Understanding the Momentum of Time**
+    
+    This calculator helps you explore the mathematical concept of compounding and the potential impact that different starting timeframes could have on long-term models. 
+    """)
     
     # Defaults
     profile = st.session_state.get('user_profile', {})
     default_amount = 50000
     
-    # --- SECTION 1: RETROSPECTIVE (The "What If") ---
-    st.markdown("### 1. The Missed Opportunity (Last 10 Years)")
-    st.info("What if you had invested in a diversified **70% Growth / 30% Defensive** portfolio 10 years ago?")
+    # --- SECTION 1: RETROSPECTIVE (Study) ---
+    st.markdown("### 1. Historical Context (Retrospective Study)")
+    st.markdown("This study explores the mathematical outcome if a hypothetical diversified **70% Growth / 30% Defensive** portfolio had been initiated 10 years ago.")
     
     col_retro1, col_retro2 = st.columns([1, 2])
     
@@ -54,11 +63,11 @@ def render_cost_of_waiting():
         
         # Display
         st.markdown(f"""
-        <div style="background-color: #f0f2f6; padding: 20px; border-radius: 10px; border-left: 5px solid #ff4b4b;">
-            <h3 style="margin:0; color: #31333F;">Hypothetical Value: <strong>${final_value:,.0f}</strong></h3>
+        <div style="background-color: #f0f2f6; padding: 20px; border-radius: 10px; border-left: 5px solid #1A2B3C;">
+            <h3 style="margin:0; color: #31333F;">Illustrative Retrospective Value: <strong>${final_value:,.0f}</strong></h3>
             <p style="font-size: 1.1em; margin-top: 10px;">
-                Total Invested: <strong>${total_invested:,.0f}</strong><br>
-                Hypothetical Gain: <span style="color: #4CAF50; font-weight: bold;">+${gain:,.0f}</span> ({roi:.0f}%)
+                Total Modeled Investment: <strong>${total_invested:,.0f}</strong><br>
+                Modeled Growth: <span style="color: #4CAF50; font-weight: bold;">+${gain:,.0f}</span> ({roi:.0f}%)
             </p>
 
         """, unsafe_allow_html=True)
@@ -135,16 +144,17 @@ def render_cost_of_waiting():
             legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01)
         )
         st.plotly_chart(fig, use_container_width=True)
+        render_chart_disclaimer()
         
         st.caption("💡 **Insight:** Notice the dips (e.g. Year 2, Year 5). Many investors panic and sell here. Staying the course is how you capture the full 10-year growth.")
         st.caption("ℹ️ *Disclaimer: This volatility map is a simulation for illustrative purposes only. It does not predict future market movements or guarantee performance.*")
 
     st.divider()
 
-    # --- SECTION 2: PROSPECTIVE (The "Future Cost") ---
-    st.markdown("### 2. The Future Cost of Delaying Decisions")
-    st.write("How much does waiting **1, 3, or 5 years** cost you in future wealth?")
-    st.info("ℹ️ **Methodology:** The 'Cost of Delay' represents the difference in potential future wealth caused by starting the compounding process later. It assumes funds sit idle (earning 0%) during the delay period.")
+    # --- SECTION 2: PROSPECTIVE (Impact of Time) ---
+    st.markdown("### 2. Modeling the Mathematical Impact of Time")
+    st.write("How do different starting points affect potential future outcomes in a mathematical model?")
+    st.info("ℹ️ **Methodology:** This model compares the potential mathematical difference caused by varying the start of the compounding process. It assumes funds do not participate in the modeled return during the delay period.")
 
     with st.expander("Adjust Future Assumptions", expanded=True):
         c1, c2 = st.columns(2)
@@ -179,7 +189,7 @@ def render_cost_of_waiting():
         m2.metric(f"Wait {delays[0]} Year", f"${results[0]['Final Wealth']:,.0f}", delta=f"-${results[0]['Cost']:,.0f}", delta_color="inverse")
         m3.metric(f"Wait {delays[2]} Years", f"${results[2]['Final Wealth']:,.0f}", delta=f"-${results[2]['Cost']:,.0f}", delta_color="inverse")
         
-        st.warning(f"⚠️ Delaying start by **5 years** is projected to reduce final wealth by **${results[2]['Cost']:,.0f}** in this scenario.")
+        st.info(f"💡 In this specific mathematical model, starting **5 years** later results in a projected difference of **\${results[2]['Cost']:,.0f}** at the end of the investment horizon.")
         
         # Disclaimer Footer
         render_footer_disclaimer()

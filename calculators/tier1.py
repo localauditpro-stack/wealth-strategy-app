@@ -16,7 +16,13 @@ def render_tier1():
     This tool assesses your **financial clarity** and readiness for advanced wealth strategies.
     """)
     
-    st.markdown("#### Your Financial Profile")
+    st.title("Tier 1: Clarity (Financial Readiness)")
+    
+    from utils.compliance import render_general_advice_warning_above_fold, render_data_usage_explanation
+    render_general_advice_warning_above_fold()
+    render_data_usage_explanation()
+    
+    st.markdown("### Your Financial Profile")
     
     col1, col2, col3 = st.columns(3)
     
@@ -232,14 +238,31 @@ def render_tier1():
             st.caption(get_projection_disclaimer())
         
         # Strategy Recommendations
-        st.markdown("### 💡 Strategies to Explore")
+        st.markdown("### Illustrative Strategies to Explore")
+        st.write("Many Australians with similar profiles consider the following concepts as part of a broader wealth strategy:")
+        
+        c1, c2 = st.columns(2)
+        with c1:
+            with st.container(border=True):
+                st.markdown("#### Debt Funded Investment Portfolio")
+                st.write("A concept often explored by those with surplus income and home equity.")
+        with c2:
+            with st.container(border=True):
+                st.markdown("#### Leveraged Investment Property")
+                st.write("A common approach for building long-term equity through property.")
+        
+        # Strategy Recommendations
         show_recommendations(total_score, assessment)
         
         # Next Steps Navigation
-        if assessment == "Ready":
-            st.markdown("### Ready for the next step?")
-            if st.button("Proceed to Strategy Comparison 👉", type="primary"):
-                go_to_page("Tier 2: Direction (Strategy)")
+        # Call to Action for Next Tier
+        st.divider()
+        st.markdown("### Next Steps: Information Deep-Dive")
+        st.write("To see how these concepts might look in a mathematical model, you can explore the next tier.")
+        
+        if st.button("Explore Strategy Comparisons (Tier 2) 👉", type="primary"):
+            from utils.ui import go_to_page
+            go_to_page("Tier 2: Direction (Strategy)")
         elif assessment == "Building":
              if st.button("Check Super Power 👉", type="secondary"):
                 go_to_page("Tier 3: Acceleration (Super)")
@@ -340,11 +363,11 @@ def create_gauge_chart(score):
     
     # Determine color based on score
     if score >= 70:
-        color = "#4CAF50"  # Green
+        color = "#10B981"  # Emerald
     elif score >= 40:
-        color = "#FF9800"  # Orange
+        color = "#F59E0B"  # Amber
     else:
-        color = "#F44336"  # Red
+        color = "#EF4444"  # Rose
     
     fig = go.Figure(go.Indicator(
         mode = "gauge+number",
@@ -359,9 +382,9 @@ def create_gauge_chart(score):
             'borderwidth': 2,
             'bordercolor': "gray",
             'steps': [
-                {'range': [0, 40], 'color': '#FFEBEE'},
-                {'range': [40, 70], 'color': '#FFF3E0'},
-                {'range': [70, 100], 'color': '#E8F5E9'}
+                {'range': [0, 40], 'color': '#FFF1F2'},
+                {'range': [40, 70], 'color': '#FFFBEB'},
+                {'range': [70, 100], 'color': '#ECFDF5'}
             ],
             'threshold': {
                 'line': {'color': "red", 'width': 4},

@@ -15,11 +15,16 @@ def load_fund_data():
         return json.load(f)
 
 def render_tier3_super():
-    st.markdown("### ⚡ Tier 3: Acceleration (Super)")
-    st.markdown("""
-    **"How fast can I go?"**
+    st.title("Tier 3: Acceleration (Superannuation Concepts)")
     
-    The power of compounding is **exponential**. See how optimizing your Super allocation **accelerates** your path to wealth.
+    from utils.compliance import render_general_advice_warning_above_fold, render_data_usage_explanation, render_chart_disclaimer
+    render_general_advice_warning_above_fold()
+    render_data_usage_explanation()
+
+    st.markdown("""
+    **Understanding Superannuation Compounding**
+    
+    The power of compounding is a fundamental concept in wealth building. This tool allows you to explore how different allocation concepts and contribution levels might model over time.
     """)
     
     # Load fund data
@@ -72,9 +77,9 @@ def render_tier3_super():
         current_balance = parse_currency_input("Current Super Balance ($)", 30000, key="balance")
         # Use profile income as default salary
         annual_salary = parse_currency_input("Annual Salary ($)", profile.get('income', 75000), key="salary")
-    with col3:
+    with col_c:
         employer_contrib = st.slider("Employer Contribution (%)", 9.5, 15.0, 11.5, 0.5, help="Source: ATO Super Guarantee rate (11.5% for FY2024-25, rising to 12% on 1 July 2025).", key="employer") / 100
-        voluntary_contrib = parse_currency_input("Voluntary Contributions ($/year)", 0, help_text="Extra you add (Salary Sacrifice or Personal Deductible)", key="voluntary")
+        voluntary_contrib = parse_currency_input("Illustrative Voluntary Contributions ($/year)", 0, help_text="Extra amount for modeling (e.g. Salary Sacrifice or Personal Deductible)", key="voluntary")
     
     
     # Investment Options - sliders now update with fund changes!
@@ -116,7 +121,7 @@ def render_tier3_super():
             st.caption(f"ℹ️ Boosting Year 1 contribution by **${unused_cap:,.0f}**")
     
     # Calculate button
-    if st.button("🚀 Calculate My Super Future", type="primary", use_container_width=True):
+    if st.button("🚀 Model Super Scenarios", type="primary", use_container_width=True):
         st.session_state['tier3_submitted'] = True
 
     if st.session_state.get('tier3_submitted', False):
@@ -178,7 +183,8 @@ def render_tier3_super():
         current_balance = results['current_balance']
 
         # Results
-        st.markdown("## 📊 Your Super Future")
+        st.markdown("## 📊 Illustrative Super Projections")
+        render_chart_disclaimer()
         
         # Inflation Toggle
         col_res_header, col_toggle = st.columns([3, 1])
@@ -232,7 +238,7 @@ def render_tier3_super():
                 x=years, 
                 y=hg_display, 
                 name="High Growth",
-                line={'color': '#C5A059', 'width': 4},
+                line={'color': '#6366F1', 'width': 4},
                 mode='lines',
                 fill='tonexty'
             ))
@@ -241,7 +247,7 @@ def render_tier3_super():
                 x=years, 
                 y=bal_display, 
                 name="Balanced",
-                line={'color': '#002B5C', 'width': 4, 'dash': 'dash'},
+                line={'color': '#0F172A', 'width': 4, 'dash': 'dash'},
                 mode='lines'
             ))
             
@@ -263,7 +269,7 @@ def render_tier3_super():
                 x=years,
                 y=gap_values,
                 name="The Gap",
-                marker_color='#FF5252'
+                marker_color='#A855F7'
             ))
             fig_gap.update_layout(
                 title="The Cost of Waiting: Cumulative Difference Over Time",
@@ -276,16 +282,14 @@ def render_tier3_super():
             # Insight
             if difference > 100000:
                 st.success(f"""
-                🎯 **Potential Impact:** The High Growth model projects a balance of **${difference:,.0f} HIGHER** in this scenario.
+                🎯 **Illustrative Impact:** In this scenario, the High Growth model projects a balance **\${difference:,.0f} higher** compared to the Balanced model.
                 
-                **Considerations:**
-                - Impact on retirement lifestyle
-                - Alignment with your risk tolerance
-                
-                **Next Steps:** Consider reviewing your allocation strategy if appropriate for your risk profile.
+                **Concepts to consider:**
+                - How different return targets impact potential retirement lifestyles.
+                - How your risk tolerance aligns with various investment options.
                 """)
             else:
-                st.info(f"💡 High Growth model leads by ${difference:,.0f} in this projection.")
+                st.info(f"💡 Illustrative model shows a \${difference:,.0f} difference between these two scenarios over the projection period.")
         
         with tab2:
             st.markdown("### 🏆 How Does Your Fund Stack Up?")
@@ -319,7 +323,7 @@ def render_tier3_super():
             fig2 = go.Figure()
             
             # Color palette
-            colors = ['#C5A059', '#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#E91E63']
+            colors = ['#6366F1', '#10B981', '#A855F7', '#F59E0B', '#3B82F6', '#EF4444']
             
             for idx, (fund_name, balances) in enumerate(fund_projections.items()):
                 # Adjust for inflation

@@ -12,6 +12,9 @@ def render_home():
             A data-driven roadmap to build, accelerate, and protect your financial future.</p>
         </div>
     """, unsafe_allow_html=True)
+
+    from utils.compliance import render_general_advice_warning_above_fold
+    render_general_advice_warning_above_fold()
     
     # The Problem / Hook - Educational
     st.markdown("### ⚠️ The Problem: Financial Clutter")
@@ -57,13 +60,13 @@ def render_home():
             justify-content: space-between;
         }
         .metric-highlight {
-            background-color: #f0f2f6;
+            background-color: #f1f5f9;
             padding: 8px;
             border-radius: 4px;
             margin-top: 10px;
             font-weight: 600;
             text-align: center;
-            color: #1A2B3C;
+            color: #6366F1;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -161,21 +164,21 @@ def render_home():
          st.markdown("""
          Earning **\$180,000+**? You are losing nearly half your extra effort to tax. 
          
-         *The Fix:* Structural changes convert personal debt into tax-deductible debt.
+         *Common Considerations:* Many Australians use structural changes to convert personal debt into tax-deductible debt.
          """)
     with e2:
          st.warning("**2. Inflation (The Thief)**")
          st.markdown("""
           Leaving **\$100,000** in cash feels safe, but at 3% p.a. inflation, its purchasing power halves in approx 24 years. 
          
-         *The Fix:* Assets must work harder than inflation. Lazy equity is a wasted resource.
+         *Common Considerations:* High-growth assets are often used to outpace inflation. "Lazy equity" can be a missed opportunity.
          """)
     with e3:
          st.info("**3. Procrastination**")
          st.markdown("""
          The "Cost of Waiting" is exponential. Delaying investment by 5 years costs **over \$500,000**.
          
-         *The Fix:* Start structurally, even if you start small.
+         *Common Considerations:* Starting early—even with small, structured contributions—is a common way to build long-term wealth.
          """)
 
     st.divider()

@@ -7,27 +7,26 @@ from utils.compliance import render_footer_disclaimer, get_projection_disclaimer
 from utils.leads import render_lead_capture_form
 
 def render_tier2():
-    st.markdown("### 🎯 Tier 2: Direction (Strategy)")
+    st.title("Tier 2: Direction (Illustrative Strategy Comparison)")
+    
+    from utils.compliance import render_general_advice_warning_above_fold, render_data_usage_explanation, render_chart_disclaimer
+    render_general_advice_warning_above_fold()
+    render_data_usage_explanation()
+
     st.markdown("""
-    **"Where should I go?"**
+    **Understanding Common Strategies**
     
-    Compare the mathematical projections of using home equity for a share portfolio vs buying an investment property.
-    This gives you clear **financial direction**.
+    This tier allows you to compare the mathematical projections of two common wealth-building concepts: a debt-funded share portfolio and an investment property.
     
-    ✅ **Tax-Deductible Interest** on investment loans  
-    ✅ **No Stamp Duty, LMI, or Maintenance** for shares  
-    ✅ **Liquidity** - shares vs property  
-    ✅ **Diversification** - market exposure differences
-    
-    See the modeled numbers below 👇
+    *Please note: These models use simplified assumptions to show potential historical trajectories; they are not a recommendation for your specific situation.*
     """)
     
     # Load shared profile
     profile = st.session_state.user_profile
 
     with st.container():
-        # --- Section 1: Personal Profile ---
-        st.markdown("#### 1. Personal Profile")
+        # --- Section 1: Profile Baseline ---
+        st.markdown("#### 1. Scenario Baseline")
         col_p1, col_p2, col_p3 = st.columns(3)
         with col_p1:
             age = st.number_input("Age", value=profile.get('age', 35), step=1)
@@ -55,11 +54,11 @@ def render_tier2():
         equity = home_value - home_loan
         usable_equity = (home_value * 0.80) - home_loan
         
-        # visual feedback for equity
+        # illustrative feedback for equity
         if usable_equity > 50000:
-            st.success(f"✅ **Usable Equity:** ${usable_equity:,.0f} (calculated at 80% LVR)")
+            st.success(f"✅ **Estimated Usable Equity:** ${usable_equity:,.0f} (illustrative calculation at 80% LVR)")
         else:
-            st.warning(f"⚠️ **Usable Equity:** ${max(0, usable_equity):,.0f} (You may need LMI to access more)")
+            st.warning(f"⚠️ **Estimated Usable Equity:** ${max(0, usable_equity):,.0f} (Accessing further equity may involve additional costs such as LMI)")
     
         # --- Section 3: Strategy Comparison ---
         st.markdown("#### 3. Strategy Configuration")
@@ -139,9 +138,7 @@ def render_tier2():
         with col_cta1:
             st.write("") # spacing
         with col_cta2:
-             # Use session state to track if we should show results
-             # This enables "Real-Time" updates. Once clicked, it stays active.
-             if st.button("🚀 Calculate Projection", type="primary", use_container_width=True):
+             if st.button("🚀 Model These Scenarios", type="primary", use_container_width=True):
                  st.session_state['tier2_submitted'] = True
 
     # Check session state var instead of just button return
@@ -199,7 +196,8 @@ def render_tier2():
         lmi = results['lmi']
         
         # 4. Results Display (Tabbed)
-        st.markdown("## 📊 Analysis Results")
+        st.markdown("## 📊 Illustrative Scenario Analysis")
+        render_chart_disclaimer()
         
         with st.expander("ℹ️ Assumptions & Methodology", expanded=False):
             st.markdown(f"""
@@ -255,12 +253,12 @@ def render_tier2():
 
             # Chart
             fig_wealth = go.Figure()
-            # Gold for Shares (Growth/Opportunity)
+            # Indigo for Shares (Growth/Opportunity)
             fig_wealth.add_trace(go.Scatter(x=years, y=dr_wealth_display, name="Debt Recycling (Shares)", 
-                                    line={'color': '#C5A059', 'width': 4}, mode='lines+markers'))
-            # Navy for Property (Stability/Foundation)
+                                    line={'color': '#6366F1', 'width': 4}, mode='lines+markers'))
+            # Slate for Property (Stability/Foundation)
             fig_wealth.add_trace(go.Scatter(x=years, y=ip_wealth_display, name="Investment Property", 
-                                    line={'color': '#002B5C', 'width': 4}, mode='lines+markers'))
+                                    line={'color': '#0F172A', 'width': 4}, mode='lines+markers'))
                                     
             fig_wealth.update_layout(
                 title="Projected Net Wealth Accumulation",
@@ -276,8 +274,8 @@ def render_tier2():
             # New Tax Comparison Chart
             st.markdown("### 💸 Annual Tax Impact Comparison")
             fig_tax = go.Figure()
-            fig_tax.add_trace(go.Bar(x=years, y=dr_results['tax_saved_yearly'], name="Shares Tax Benefit", marker_color='#C5A059'))
-            fig_tax.add_trace(go.Bar(x=years, y=ip_results['tax_saved_yearly'], name="Property Tax Benefit", marker_color='#002B5C'))
+            fig_tax.add_trace(go.Bar(x=years, y=dr_results['tax_saved_yearly'], name="Shares Tax Benefit", marker_color='#A855F7'))
+            fig_tax.add_trace(go.Bar(x=years, y=ip_results['tax_saved_yearly'], name="Property Tax Benefit", marker_color='#6366F1'))
             fig_tax.update_layout(
                 title="Annual Tax Savings (Negative Gearing Benefit)",
                 xaxis_title="Year",
@@ -311,16 +309,15 @@ def render_tier2():
             
             if higher_scenario == "Share Scenario":
                 st.success(f"""
-                💡 **Scenario Analysis:** The **Share Portfolio model** projects a result **\${diff:,.0f} higher** over 10 years ({val_type} Value).
+                💡 **Illustrative Insight:** In this specific mathematical model, the **Share Portfolio concept** projects a result **\${diff:,.0f} higher** over 10 years ({val_type} Value).
                 
-                **Key Drivers in this Model:** 
-                - Interest deductibility
-                - Tax flexibility (CGT management)
-                - Liquidity differences
-                - Absence of stamp duty (**\${stamp_duty:,.0f}**) and ongoing property costs
+                **Concepts explored in this model:** 
+                - Potential for tax-deductible interest
+                - Differences in upfront costs (e.g. absence of stamp duty)
+                - Contrasting levels of liquidity and diversification
                 """)
             else:
-                st.info(f"💡 **Scenario Analysis:** The **Property model** projects a result **\${diff:,.0f} higher** over 10 years ({val_type} Value). Consider also liquidity and tax flexibility.")
+                st.info(f"💡 **Illustrative Insight:** In this specific mathematical model, the **Property concept** projects a result **\${diff:,.0f} higher** over 10 years ({val_type} Value). Whether such a concept is appropriate for you depends on your personal circumstances and risk profile.")
 
         with tab2:
             # GATED CONTENT
@@ -377,16 +374,16 @@ def render_tier2():
              c1, c2, c3 = st.columns([1,2,1])
              with c2:
                  st.download_button(
-                     "📄 Download Professional Wealth Report (PDF)", 
+                     "📄 Download Information Summary Report (PDF)", 
                      pdf, 
-                     "Wealth_Strategy_Report.pdf", 
+                     "Wealth_Information_Summary.pdf", 
                      "application/pdf",
                      type="primary",
                      use_container_width=True
                  )
         else:
-             st.markdown("### 📄 Want a Professional PDF Report?")
-             if render_lead_capture_form("tier2_pdf", button_label="Generate PDF Report"):
+             st.markdown("### 📄 Want a Detailed Information Summary (PDF)?")
+             if render_lead_capture_form("tier2_pdf", button_label="Generate PDF Summary"):
                  st.rerun()
         
 import numpy_financial as npf

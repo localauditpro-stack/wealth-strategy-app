@@ -8,9 +8,10 @@ import io
 import datetime
 
 # --- BRANDING CONSTANTS ---
-APT_NAVY = colors.Color(0/255, 43/255, 92/255) # #002B5C
-APT_GOLD = colors.Color(197/255, 160/255, 89/255) # #C5A059
-APT_GREY = colors.Color(240/255, 242/255, 246/255) # #F0F2F6
+BRAND_NAVY = colors.Color(15/255, 23/255, 42/255) # #0F172A
+BRAND_INDIGO = colors.Color(99/255, 102/255, 241/255) # #6366F1
+BRAND_PURPLE = colors.Color(168/255, 85/255, 247/255) # #A855F7
+BRAND_GREY = colors.Color(248/255, 250/255, 252/255) # #F8FAFC
 
 def header_footer(canvas, doc):
     """Draws the header and footer on every page."""
@@ -20,11 +21,11 @@ def header_footer(canvas, doc):
     # --- HEADER ---
     # Logo Placeholder (Text for now)
     canvas.setFont("Helvetica-Bold", 16)
-    canvas.setFillColor(APT_NAVY)
-    canvas.drawString(inch, height - 50, "APT WEALTH PARTNERS")
+    canvas.setFillColor(BRAND_NAVY)
+    canvas.drawString(inch, height - 50, "WEALTH ACCELERATOR")
     
     # Top Line
-    canvas.setStrokeColor(APT_GOLD)
+    canvas.setStrokeColor(BRAND_INDIGO)
     canvas.setLineWidth(2)
     canvas.line(inch, height - 60, width - inch, height - 60)
     
@@ -116,13 +117,13 @@ def generate_pdf_report(user_data, dr_results, ip_results, chart_image=None):
     
     t = Table(data, colWidths=[2.5*inch, 1.75*inch, 1.75*inch])
     t.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), APT_NAVY),
+        ('BACKGROUND', (0, 0), (-1, 0), BRAND_NAVY),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('ALIGN', (0, 0), (0, -1), 'LEFT'), # Left align first col
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), APT_GREY),
+        ('BACKGROUND', (0, 1), (-1, -1), BRAND_GREY),
         ('GRID', (0, 0), (-1, -1), 1, colors.white)
     ]))
     
