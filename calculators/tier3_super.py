@@ -77,7 +77,7 @@ def render_tier3_super():
         current_balance = parse_currency_input("Current Super Balance ($)", 30000, key="balance")
         # Use profile income as default salary
         annual_salary = parse_currency_input("Annual Salary ($)", profile.get('income', 75000), key="salary")
-    with col_c:
+    with col3:
         employer_contrib = st.slider("Employer Contribution (%)", 9.5, 15.0, 11.5, 0.5, help="Source: ATO Super Guarantee rate (11.5% for FY2024-25, rising to 12% on 1 July 2025).", key="employer") / 100
         voluntary_contrib = parse_currency_input("Illustrative Voluntary Contributions ($/year)", 0, help_text="Extra amount for modeling (e.g. Salary Sacrifice or Personal Deductible)", key="voluntary")
     
